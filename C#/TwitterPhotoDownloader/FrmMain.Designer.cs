@@ -53,6 +53,7 @@
             this.tbUserName.Name = "tbUserName";
             this.tbUserName.Size = new System.Drawing.Size(269, 20);
             this.tbUserName.TabIndex = 1;
+            this.tbUserName.Text = "beamng";
             // 
             // label2
             // 
@@ -100,6 +101,7 @@
             // 
             // btnStart
             // 
+            this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStart.Location = new System.Drawing.Point(3, 161);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(269, 23);

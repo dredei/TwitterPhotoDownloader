@@ -12,15 +12,18 @@ namespace TwitterPhotoDownloader
 {
     public partial class FrmMain : Form
     {
+        private readonly TwitterDownloader _twitterDownloader;
+
         public FrmMain()
         {
             InitializeComponent();
+            this._twitterDownloader = new TwitterDownloader();
         }
 
-        public void Work()
+        private void Work()
         {
-            var tDownloader = new TwitterDownloader();
-            tDownloader.DownloadPhotos( "beamng", tbSavePath.Text );
+            this._twitterDownloader.DownloadPhotos( tbUserName.Text, tbSavePath.Text );
+            MessageBox.Show( "OK" );
         }
 
         private void btnStart_Click( object sender, EventArgs e )
