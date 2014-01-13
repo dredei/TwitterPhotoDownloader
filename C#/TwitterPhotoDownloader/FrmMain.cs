@@ -14,7 +14,7 @@ namespace TwitterPhotoDownloader
 {
     public partial class FrmMain : Form
     {
-        private readonly TwitterDownloader _twitterDownloader;
+        private TwitterDownloader _twitterDownloader;
         private string _language = "en-GB";
         private const string Version = "1.0.0 Beta 1";
         private Thread _thread;
@@ -24,7 +24,6 @@ namespace TwitterPhotoDownloader
             this.LoadSettings();
             Thread.CurrentThread.CurrentUICulture = new CultureInfo( this._language );
             this.InitializeComponent();
-            this._twitterDownloader = new TwitterDownloader();
             CheckForIllegalCrossThreadCalls = false;
         }
 
@@ -71,6 +70,7 @@ namespace TwitterPhotoDownloader
             Thread.CurrentThread.CurrentUICulture = new CultureInfo( this._language );
             try
             {
+                this._twitterDownloader = new TwitterDownloader();
                 this._twitterDownloader.DownloadPhotos( this.tbUserName.Text, this.tbSavePath.Text );
                 this.tmrProgress.Stop();
                 MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
