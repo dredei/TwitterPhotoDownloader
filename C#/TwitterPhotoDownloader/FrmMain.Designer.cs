@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbUserName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tbSavePath = new System.Windows.Forms.TextBox();
             this.btnSelectDir = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.pb1 = new System.Windows.Forms.ProgressBar();
             this.tbLog = new System.Windows.Forms.TextBox();
             this.btnStart = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -47,12 +47,12 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Имя пользователя:";
             // 
-            // textBox1
+            // tbUserName
             // 
-            this.textBox1.Location = new System.Drawing.Point(3, 16);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(269, 20);
-            this.textBox1.TabIndex = 1;
+            this.tbUserName.Location = new System.Drawing.Point(3, 16);
+            this.tbUserName.Name = "tbUserName";
+            this.tbUserName.Size = new System.Drawing.Size(269, 20);
+            this.tbUserName.TabIndex = 1;
             // 
             // label2
             // 
@@ -63,13 +63,13 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Сохранять в:";
             // 
-            // textBox2
+            // tbSavePath
             // 
-            this.textBox2.Location = new System.Drawing.Point(3, 55);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(233, 20);
-            this.textBox2.TabIndex = 3;
-            this.textBox2.Text = "C:\\Test";
+            this.tbSavePath.Location = new System.Drawing.Point(3, 55);
+            this.tbSavePath.Name = "tbSavePath";
+            this.tbSavePath.Size = new System.Drawing.Size(233, 20);
+            this.tbSavePath.TabIndex = 3;
+            this.tbSavePath.Text = "C:\\Test";
             // 
             // btnSelectDir
             // 
@@ -81,12 +81,12 @@
             this.btnSelectDir.Text = "...";
             this.btnSelectDir.UseVisualStyleBackColor = true;
             // 
-            // progressBar1
+            // pb1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(3, 136);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(269, 19);
-            this.progressBar1.TabIndex = 5;
+            this.pb1.Location = new System.Drawing.Point(3, 136);
+            this.pb1.Name = "pb1";
+            this.pb1.Size = new System.Drawing.Size(269, 19);
+            this.pb1.TabIndex = 5;
             // 
             // tbLog
             // 
@@ -116,11 +116,11 @@
             this.ClientSize = new System.Drawing.Size(275, 187);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.tbLog);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.pb1);
             this.Controls.Add(this.btnSelectDir);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.tbSavePath);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tbUserName);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -135,11 +135,11 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbUserName;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tbSavePath;
         private System.Windows.Forms.Button btnSelectDir;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar pb1;
         private System.Windows.Forms.TextBox tbLog;
         private System.Windows.Forms.Button btnStart;
     }
