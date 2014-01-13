@@ -5,10 +5,10 @@ TwitterPhotoDownloader
 
 Download **all** photo of a user from media page.
 
-Using Internet Explorer. Min version: 8 .
+Using Internet Explorer. **Min version of IE: 8** .
 
 ### Russian
 
 Скачивает **все** фото пользователя с медиа страницы.
 
-Используется Internet Explorer. Минимальная версия: 8 .
+Используется Internet Explorer. **Минимальная версия IE: 8** .
