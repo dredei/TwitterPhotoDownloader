@@ -84,14 +84,6 @@ namespace TwitterPhotoDownloader
                 this._loading = true;
                 this._loadingTimer.Start();
                 this.WaitForLoading();
-                //int i = 0;
-                //while ( i < 5 )
-                //{
-                //    Application.DoEvents();
-                //    Thread.Sleep( 2000 );
-                //    i++;
-                //    Application.DoEvents();
-                //}
                 newHeight = this._webBrowser.Document.Body.ScrollRectangle.Height;
                 Application.DoEvents();
             }
