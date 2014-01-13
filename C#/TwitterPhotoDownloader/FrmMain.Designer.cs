@@ -34,8 +34,8 @@
             this.tbSavePath = new System.Windows.Forms.TextBox();
             this.btnSelectDir = new System.Windows.Forms.Button();
             this.pb1 = new System.Windows.Forms.ProgressBar();
-            this.tbLog = new System.Windows.Forms.TextBox();
             this.btnStart = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -84,25 +84,15 @@
             // 
             // pb1
             // 
-            this.pb1.Location = new System.Drawing.Point(3, 136);
+            this.pb1.Location = new System.Drawing.Point(3, 94);
             this.pb1.Name = "pb1";
             this.pb1.Size = new System.Drawing.Size(269, 19);
             this.pb1.TabIndex = 5;
             // 
-            // tbLog
-            // 
-            this.tbLog.Location = new System.Drawing.Point(3, 82);
-            this.tbLog.Multiline = true;
-            this.tbLog.Name = "tbLog";
-            this.tbLog.ReadOnly = true;
-            this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.tbLog.Size = new System.Drawing.Size(269, 48);
-            this.tbLog.TabIndex = 6;
-            // 
             // btnStart
             // 
             this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnStart.Location = new System.Drawing.Point(3, 161);
+            this.btnStart.Location = new System.Drawing.Point(3, 119);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(269, 23);
             this.btnStart.TabIndex = 7;
@@ -110,15 +100,24 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(0, 78);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(16, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "...";
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(275, 187);
+            this.ClientSize = new System.Drawing.Size(275, 145);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.btnStart);
-            this.Controls.Add(this.tbLog);
             this.Controls.Add(this.pb1);
             this.Controls.Add(this.btnSelectDir);
             this.Controls.Add(this.tbSavePath);
@@ -143,8 +142,8 @@
         private System.Windows.Forms.TextBox tbSavePath;
         private System.Windows.Forms.Button btnSelectDir;
         private System.Windows.Forms.ProgressBar pb1;
-        private System.Windows.Forms.TextBox tbLog;
         private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Label label3;
     }
 }
 
