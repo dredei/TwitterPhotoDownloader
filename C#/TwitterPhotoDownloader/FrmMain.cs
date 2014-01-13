@@ -21,12 +21,23 @@ namespace TwitterPhotoDownloader
 
         private void Work()
         {
-            this._twitterDownloader.DownloadPhotos( this.tbUserName.Text, this.tbSavePath.Text );
-            this.tmrProgress.Stop();
-            this.lblInfo.Text = strings.Points;
-            this.pb1.Value = 0;
-            MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
-            this.DisEnControls();
+            try
+            {
+                this._twitterDownloader.DownloadPhotos( this.tbUserName.Text, this.tbSavePath.Text );
+                this.tmrProgress.Stop();
+                MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
+            }
+            catch ( Exception exception )
+            {
+                MessageBox.Show( exception.Message, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
+            }
+            finally
+            {
+                this.tmrProgress.Stop();
+                this.lblInfo.Text = strings.Points;
+                this.pb1.Value = 0;
+                this.DisEnControls();
+            }
         }
 
         private void DisEnControls()

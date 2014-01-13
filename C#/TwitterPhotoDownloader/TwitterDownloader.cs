@@ -112,17 +112,17 @@ namespace TwitterPhotoDownloader
             }
             int oldHeight;
             int newHeight;
-            int page = 1;
+            int page = 0;
             do
             {
+                page++;
+                this.Progress.Page = page;
                 oldHeight = this._webBrowser.Document.Body.ScrollRectangle.Height;
                 this._webBrowser.Document.Window.ScrollTo( 0, this._webBrowser.Document.Body.ScrollRectangle.Height );
                 this._loading = true;
                 this._loadingTimer.Start();
                 this.WaitForLoading();
                 newHeight = this._webBrowser.Document.Body.ScrollRectangle.Height;
-                page++;
-                this.Progress.Page = page;
                 Application.DoEvents();
             }
             while ( newHeight > oldHeight );
@@ -141,6 +141,10 @@ namespace TwitterPhotoDownloader
 
         public void DownloadPhotos( string username, string savePath )
         {
+            if ( savePath[ savePath.Length - 1 ] == '\\' )
+            {
+                savePath = savePath.Remove( savePath.Length - 1, 1 );
+            }
             this.Progress.CurrentProgress = 0;
             this.Progress.Type = ProgressType.GettingImages;
             List<string> photosUrls = this.GetPhotos( username );

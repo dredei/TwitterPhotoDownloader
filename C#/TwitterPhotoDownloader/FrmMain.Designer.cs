@@ -71,7 +71,7 @@
             this.tbSavePath.Name = "tbSavePath";
             this.tbSavePath.Size = new System.Drawing.Size(233, 20);
             this.tbSavePath.TabIndex = 3;
-            this.tbSavePath.Text = "C:\\Test";
+            this.tbSavePath.Text = "C:\\TwitterPhotoDownloader";
             // 
             // btnSelectDir
             // 
