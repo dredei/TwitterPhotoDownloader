@@ -29,25 +29,26 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblUserName = new System.Windows.Forms.Label();
             this.tbUserName = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblSavePath = new System.Windows.Forms.Label();
             this.tbSavePath = new System.Windows.Forms.TextBox();
             this.btnSelectDir = new System.Windows.Forms.Button();
             this.pb1 = new System.Windows.Forms.ProgressBar();
             this.btnStart = new System.Windows.Forms.Button();
             this.lblInfo = new System.Windows.Forms.Label();
             this.tmrProgress = new System.Windows.Forms.Timer(this.components);
+            this.lblSite = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label1
+            // lblUserName
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(106, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Имя пользователя:";
+            this.lblUserName.AutoSize = true;
+            this.lblUserName.Location = new System.Drawing.Point(0, 0);
+            this.lblUserName.Name = "lblUserName";
+            this.lblUserName.Size = new System.Drawing.Size(106, 13);
+            this.lblUserName.TabIndex = 0;
+            this.lblUserName.Text = "Имя пользователя:";
             // 
             // tbUserName
             // 
@@ -56,14 +57,14 @@
             this.tbUserName.Size = new System.Drawing.Size(269, 20);
             this.tbUserName.TabIndex = 1;
             // 
-            // label2
+            // lblSavePath
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(0, 39);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Сохранять в:";
+            this.lblSavePath.AutoSize = true;
+            this.lblSavePath.Location = new System.Drawing.Point(0, 39);
+            this.lblSavePath.Name = "lblSavePath";
+            this.lblSavePath.Size = new System.Drawing.Size(72, 13);
+            this.lblSavePath.TabIndex = 2;
+            this.lblSavePath.Text = "Сохранять в:";
             // 
             // tbSavePath
             // 
@@ -114,21 +115,34 @@
             // 
             this.tmrProgress.Tick += new System.EventHandler(this.tmrProgress_Tick);
             // 
+            // lblSite
+            // 
+            this.lblSite.AutoSize = true;
+            this.lblSite.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblSite.ForeColor = System.Drawing.Color.Blue;
+            this.lblSite.Location = new System.Drawing.Point(243, 145);
+            this.lblSite.Name = "lblSite";
+            this.lblSite.Size = new System.Drawing.Size(29, 13);
+            this.lblSite.TabIndex = 9;
+            this.lblSite.Text = "Site";
+            this.lblSite.Click += new System.EventHandler(this.lblSite_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(275, 145);
+            this.ClientSize = new System.Drawing.Size(275, 160);
+            this.Controls.Add(this.lblSite);
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.pb1);
             this.Controls.Add(this.btnSelectDir);
             this.Controls.Add(this.tbSavePath);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblSavePath);
             this.Controls.Add(this.tbUserName);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblUserName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "FrmMain";
@@ -141,15 +155,16 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.TextBox tbUserName;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblSavePath;
         private System.Windows.Forms.TextBox tbSavePath;
         private System.Windows.Forms.Button btnSelectDir;
         private System.Windows.Forms.ProgressBar pb1;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.Timer tmrProgress;
+        private System.Windows.Forms.Label lblSite;
     }
 }
 

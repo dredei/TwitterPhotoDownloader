@@ -1,6 +1,7 @@
 ﻿#region Using
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -79,6 +80,11 @@ namespace TwitterPhotoDownloader
                     this.pb1.Value = this._twitterDownloader.Progress.CurrentProgress;
                     break;
             }
+        }
+
+        private void lblSite_Click( object sender, EventArgs e )
+        {
+            Process.Start( "http://www.softez.pp.ua/" );
         }
     }
 }
