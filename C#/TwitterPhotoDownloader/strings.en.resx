@@ -117,38 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AboutInfo" xml:space="preserve">
+    <value>Author: dredei\nVersion: </value>
+  </data>
   <data name="Done" xml:space="preserve">
-    <value>Завершено!</value>
+    <value>Done!</value>
   </data>
   <data name="DownloadingImages" xml:space="preserve">
-    <value>Скачиваем изображения...</value>
+    <value>Download images...</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="FillTheFields" xml:space="preserve">
+    <value>Fill the fields!</value>
   </data>
   <data name="GettingImages" xml:space="preserve">
-    <value>Получаем изображения (страница {0})...</value>
+    <value>Getting images (page {0})...</value>
   </data>
   <data name="Information" xml:space="preserve">
-    <value>Информация</value>
+    <value>Information</value>
   </data>
   <data name="Points" xml:space="preserve">
     <value>...</value>
   </data>
-  <data name="FillTheFields" xml:space="preserve">
-    <value>Заполните поля!</value>
-  </data>
-  <data name="Error" xml:space="preserve">
-    <value>Ошибка</value>
-  </data>
   <data name="RestartApp" xml:space="preserve">
-    <value>Приложение будет перезапущено! Продолжить?</value>
+    <value>The application will be restarted! Continue?</value>
   </data>
   <data name="Warning" xml:space="preserve">
-    <value>Предупреждение</value>
-  </data>
-  <data name="AboutInfo" xml:space="preserve">
-    <value>Автор: dredei
-Версия: </value>
-  </data>
-  <data name="About" xml:space="preserve">
-    <value>О программе...</value>
+    <value>Warning</value>
   </data>
 </root>

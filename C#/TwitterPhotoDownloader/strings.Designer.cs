@@ -61,6 +61,25 @@ namespace TwitterPhotoDownloader {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на О программе....
+        /// </summary>
+        internal static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Автор: dredei
+        ///Версия: .
+        /// </summary>
+        internal static string AboutInfo {
+            get {
+                return ResourceManager.GetString("AboutInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Завершено!.
         /// </summary>
         internal static string Done {
@@ -120,6 +139,24 @@ namespace TwitterPhotoDownloader {
         internal static string Points {
             get {
                 return ResourceManager.GetString("Points", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Приложение будет перезапущено! Продолжить?.
+        /// </summary>
+        internal static string RestartApp {
+            get {
+                return ResourceManager.GetString("RestartApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Предупреждение.
+        /// </summary>
+        internal static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
     }

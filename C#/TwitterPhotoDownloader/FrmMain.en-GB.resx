@@ -117,38 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Done" xml:space="preserve">
-    <value>Завершено!</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="lblUserName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 13</value>
   </data>
-  <data name="DownloadingImages" xml:space="preserve">
-    <value>Скачиваем изображения...</value>
+  <data name="lblUserName.Text" xml:space="preserve">
+    <value>Username:</value>
   </data>
-  <data name="GettingImages" xml:space="preserve">
-    <value>Получаем изображения (страница {0})...</value>
+  <data name="lblSavePath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 13</value>
   </data>
-  <data name="Information" xml:space="preserve">
-    <value>Информация</value>
+  <data name="lblSavePath.Text" xml:space="preserve">
+    <value>Save in:</value>
   </data>
-  <data name="Points" xml:space="preserve">
-    <value>...</value>
+  <data name="btnStart.Text" xml:space="preserve">
+    <value>Start</value>
   </data>
-  <data name="FillTheFields" xml:space="preserve">
-    <value>Заполните поля!</value>
+  <data name="языкToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 20</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>Ошибка</value>
+  <data name="языкToolStripMenuItem.Text" xml:space="preserve">
+    <value>Language</value>
   </data>
-  <data name="RestartApp" xml:space="preserve">
-    <value>Приложение будет перезапущено! Продолжить?</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Предупреждение</value>
-  </data>
-  <data name="AboutInfo" xml:space="preserve">
-    <value>Автор: dredei
-Версия: </value>
-  </data>
-  <data name="About" xml:space="preserve">
-    <value>О программе...</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>275, 187</value>
   </data>
 </root>

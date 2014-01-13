@@ -14,7 +14,6 @@ using Timer = System.Windows.Forms.Timer;
 
 namespace TwitterPhotoDownloader
 {
-
     #region Additional classes
 
     public class ProgressC
