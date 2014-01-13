@@ -50,4 +50,4 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-Filename: "{#MyAppUrl}"; Flags: shellexec runasoriginaluser postinstall; Description: "Visit website"
+Filename: "{#MyAppUrl}"; Flags: shellexec runasoriginaluser postinstall; Description: "Open home page."
