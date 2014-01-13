@@ -70,8 +70,8 @@
             // 
             // btnSelectDir
             // 
-            this.btnSelectDir.Cursor = System.Windows.Forms.Cursors.Hand;
             resources.ApplyResources(this.btnSelectDir, "btnSelectDir");
+            this.btnSelectDir.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSelectDir.Name = "btnSelectDir";
             this.btnSelectDir.UseVisualStyleBackColor = true;
             // 
@@ -82,8 +82,8 @@
             // 
             // btnStart
             // 
-            this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
             resources.ApplyResources(this.btnStart, "btnStart");
+            this.btnStart.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStart.Name = "btnStart";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -106,36 +106,36 @@
             // 
             // msMainMenu
             // 
+            resources.ApplyResources(this.msMainMenu, "msMainMenu");
             this.msMainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.языкToolStripMenuItem,
             this.aboutToolStripMenuItem});
-            resources.ApplyResources(this.msMainMenu, "msMainMenu");
             this.msMainMenu.Name = "msMainMenu";
             // 
             // языкToolStripMenuItem
             // 
+            resources.ApplyResources(this.языкToolStripMenuItem, "языкToolStripMenuItem");
             this.языкToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiEng,
             this.tsmiRus});
             this.языкToolStripMenuItem.Name = "языкToolStripMenuItem";
-            resources.ApplyResources(this.языкToolStripMenuItem, "языкToolStripMenuItem");
             // 
             // tsmiEng
             // 
-            this.tsmiEng.Name = "tsmiEng";
             resources.ApplyResources(this.tsmiEng, "tsmiEng");
+            this.tsmiEng.Name = "tsmiEng";
             this.tsmiEng.Click += new System.EventHandler(this.tsmiEng_Click);
             // 
             // tsmiRus
             // 
-            this.tsmiRus.Name = "tsmiRus";
             resources.ApplyResources(this.tsmiRus, "tsmiRus");
+            this.tsmiRus.Name = "tsmiRus";
             this.tsmiRus.Click += new System.EventHandler(this.tsmiRus_Click);
             // 
             // aboutToolStripMenuItem
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // FrmMain
