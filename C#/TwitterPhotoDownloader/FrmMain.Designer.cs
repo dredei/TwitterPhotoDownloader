@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.tbUserName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -35,7 +36,8 @@
             this.btnSelectDir = new System.Windows.Forms.Button();
             this.pb1 = new System.Windows.Forms.ProgressBar();
             this.btnStart = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lblInfo = new System.Windows.Forms.Label();
+            this.tmrProgress = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // label1
@@ -53,7 +55,6 @@
             this.tbUserName.Name = "tbUserName";
             this.tbUserName.Size = new System.Drawing.Size(269, 20);
             this.tbUserName.TabIndex = 1;
-            this.tbUserName.Text = "beamng";
             // 
             // label2
             // 
@@ -100,14 +101,18 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // label3
+            // lblInfo
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(0, 78);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(16, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "...";
+            this.lblInfo.AutoSize = true;
+            this.lblInfo.Location = new System.Drawing.Point(0, 78);
+            this.lblInfo.Name = "lblInfo";
+            this.lblInfo.Size = new System.Drawing.Size(16, 13);
+            this.lblInfo.TabIndex = 8;
+            this.lblInfo.Text = "...";
+            // 
+            // tmrProgress
+            // 
+            this.tmrProgress.Tick += new System.EventHandler(this.tmrProgress_Tick);
             // 
             // FrmMain
             // 
@@ -116,7 +121,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(275, 145);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.pb1);
             this.Controls.Add(this.btnSelectDir);
@@ -143,7 +148,8 @@
         private System.Windows.Forms.Button btnSelectDir;
         private System.Windows.Forms.ProgressBar pb1;
         private System.Windows.Forms.Button btnStart;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblInfo;
+        private System.Windows.Forms.Timer tmrProgress;
     }
 }
 

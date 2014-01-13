@@ -1,13 +1,15 @@
-﻿using System;
+﻿#region Using
+
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using Timer = System.Windows.Forms.Timer;
+
+#endregion
 
 namespace TwitterPhotoDownloader
 {
@@ -18,6 +20,7 @@ namespace TwitterPhotoDownloader
     {
         public int CurrentProgress { get; set; }
         public int MaxProgress { get; set; }
+        public int Page { get; set; }
         public ProgressType Type { get; set; }
     }
 
@@ -44,7 +47,7 @@ namespace TwitterPhotoDownloader
             this._webClient = new WebClient();
             this.Progress = new ProgressC();
             this._loadingTimer = new Timer { Interval = 3500 };
-            this._loadingTimer.Tick += _loadingTimer_Tick;
+            this._loadingTimer.Tick += this._loadingTimer_Tick;
             this._loading = false;
         }
 
@@ -92,21 +95,24 @@ namespace TwitterPhotoDownloader
             }
             string fileName = savePath + "\\" + Path.GetFileName( fileUrl.Substring( 0, fileUrl.Length - 6 ) );
             this._webClient.DownloadFile( fileUrl, fileName );
+            Thread.Sleep( 500 );
         }
 
         private List<string> GetPhotos( string username )
         {
             var photosUrls = new List<string>();
             this._loading = true;
-            _webBrowser.Navigate( "https://twitter.com/" + username + "/media" );
+            this._webBrowser.Navigate( "https://twitter.com/" + username + "/media" );
             this._loadingTimer.Start();
             this.WaitForLoading();
-            if ( this._webBrowser.Document == null || this._webBrowser.Document.Body == null || this._webBrowser.Document.Window == null )
+            if ( this._webBrowser.Document == null || this._webBrowser.Document.Body == null ||
+                 this._webBrowser.Document.Window == null )
             {
                 return photosUrls;
             }
             int oldHeight;
             int newHeight;
+            int page = 1;
             do
             {
                 oldHeight = this._webBrowser.Document.Body.ScrollRectangle.Height;
@@ -115,6 +121,8 @@ namespace TwitterPhotoDownloader
                 this._loadingTimer.Start();
                 this.WaitForLoading();
                 newHeight = this._webBrowser.Document.Body.ScrollRectangle.Height;
+                page++;
+                this.Progress.Page = page;
                 Application.DoEvents();
             }
             while ( newHeight > oldHeight );
@@ -133,7 +141,7 @@ namespace TwitterPhotoDownloader
 
         public void DownloadPhotos( string username, string savePath )
         {
-            this.Progress.CurrentProgress = -1;
+            this.Progress.CurrentProgress = 0;
             this.Progress.Type = ProgressType.GettingImages;
             List<string> photosUrls = this.GetPhotos( username );
             this.Progress.MaxProgress = photosUrls.Count;
@@ -141,7 +149,7 @@ namespace TwitterPhotoDownloader
             for ( int i = 0; i < photosUrls.Count; i++ )
             {
                 this.DownloadFile( photosUrls[ i ], savePath );
-                this.Progress.CurrentProgress = i;
+                this.Progress.CurrentProgress = i + 1;
             }
         }
     }
