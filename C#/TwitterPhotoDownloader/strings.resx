@@ -145,8 +145,7 @@
     <value>Предупреждение</value>
   </data>
   <data name="AboutInfo" xml:space="preserve">
-    <value>Автор: dredei
-Версия: </value>
+    <value>Автор: dredei\nВерсия: </value>
   </data>
   <data name="About" xml:space="preserve">
     <value>О программе...</value>

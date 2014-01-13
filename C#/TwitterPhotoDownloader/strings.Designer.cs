@@ -70,8 +70,7 @@ namespace TwitterPhotoDownloader {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Автор: dredei
-        ///Версия: .
+        ///   Ищет локализованную строку, похожую на Автор: dredei\nВерсия: .
         /// </summary>
         internal static string AboutInfo {
             get {

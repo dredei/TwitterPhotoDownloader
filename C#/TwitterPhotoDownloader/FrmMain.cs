@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
+using ExtensionMethods;
 using Ini;
 
 #endregion
@@ -15,6 +16,8 @@ namespace TwitterPhotoDownloader
     {
         private readonly TwitterDownloader _twitterDownloader;
         private string _language = "en-GB";
+        private const string Version = "1.0.0 Beta 1";
+        private Thread _thread;
 
         public FrmMain()
         {
@@ -78,11 +81,14 @@ namespace TwitterPhotoDownloader
             }
             finally
             {
-                this.tmrProgress.Stop();
-                this.lblInfo.Text = strings.Points;
-                this.pb1.Value = 0;
-                this.pb1.Style = ProgressBarStyle.Blocks;
-                this.DisEnControls();
+                this.Invoke( new MethodInvoker( delegate()
+                {
+                    this.tmrProgress.Stop();
+                    this.lblInfo.Text = strings.Points;
+                    this.pb1.Value = 0;
+                    this.pb1.Style = ProgressBarStyle.Blocks;
+                    this.DisEnControls();
+                } ) );
             }
         }
 
@@ -101,11 +107,11 @@ namespace TwitterPhotoDownloader
                 MessageBox.Show( strings.FillTheFields, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
                 return;
             }
-            tbUserName.Text = TwitterDownloader.FixUserName( tbUserName.Text );
+            this.tbUserName.Text = TwitterDownloader.FixUserName( this.tbUserName.Text );
             this.DisEnControls();
-            Thread thread = new Thread( this.Work );
-            thread.SetApartmentState( ApartmentState.STA );
-            thread.Start();
+            this._thread = new Thread( this.Work );
+            this._thread.SetApartmentState( ApartmentState.STA );
+            this._thread.Start();
             this.tmrProgress.Start();
         }
 
@@ -135,6 +141,10 @@ namespace TwitterPhotoDownloader
         private void FrmMain_FormClosing( object sender, FormClosingEventArgs e )
         {
             this.SaveSettings();
+            if ( this._thread != null )
+            {
+                this._thread.Abort();
+            }
         }
 
         private void tsmiEng_Click( object sender, EventArgs e )
@@ -149,7 +159,8 @@ namespace TwitterPhotoDownloader
 
         private void aboutToolStripMenuItem_Click( object sender, EventArgs e )
         {
-            MessageBox.Show( strings.AboutInfo, strings.About, MessageBoxButtons.OK, MessageBoxIcon.Information );
+            MessageBox.Show( strings.AboutInfo.FixNewLines() + Version, strings.About, MessageBoxButtons.OK,
+                MessageBoxIcon.Information );
         }
     }
 }

@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExtensionMethods">
+      <HintPath>..\packages\ExtensionMethods.dll</HintPath>
+    </Reference>
     <Reference Include="IniFile, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IniFile.dll</HintPath>

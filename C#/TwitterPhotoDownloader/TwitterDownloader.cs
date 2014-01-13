@@ -14,6 +14,7 @@ using Timer = System.Windows.Forms.Timer;
 
 namespace TwitterPhotoDownloader
 {
+
     #region Additional classes
 
     public class ProgressC
@@ -94,12 +95,14 @@ namespace TwitterPhotoDownloader
         /// <param name="savePath">Where to save</param>
         private void DownloadFile( string fileUrl, string savePath )
         {
-            if ( !Directory.Exists( savePath ) )
-            {
-                Directory.CreateDirectory( savePath );
-            }
             string fileName = savePath + "\\" + Path.GetFileName( fileUrl.Substring( 0, fileUrl.Length - 6 ) );
-            this._webClient.DownloadFile( fileUrl, fileName );
+            try
+            {
+                this._webClient.DownloadFile( fileUrl, fileName );
+            }
+            catch
+            {
+            }
             Thread.Sleep( 500 );
         }
 
@@ -139,7 +142,7 @@ namespace TwitterPhotoDownloader
                 Application.DoEvents();
             }
             while ( newHeight > oldHeight );
-            
+
             var elements = this._webBrowser.Document.Body.GetElementsByTagName( "span" );
             foreach ( HtmlElement element in elements )
             {
@@ -163,6 +166,10 @@ namespace TwitterPhotoDownloader
             List<string> photosUrls = this.GetPhotos( username );
             this.Progress.MaxProgress = photosUrls.Count;
             this.Progress.Type = ProgressType.DownloadingImages;
+            if ( !Directory.Exists( savePath ) )
+            {
+                Directory.CreateDirectory( savePath );
+            }
             for ( int i = 0; i < photosUrls.Count; i++ )
             {
                 this.DownloadFile( photosUrls[ i ], savePath );
