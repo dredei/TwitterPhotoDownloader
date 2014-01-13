@@ -55,6 +55,7 @@ namespace TwitterPhotoDownloader
                 MessageBox.Show( strings.FillTheFields, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
                 return;
             }
+            tbUserName.Text = TwitterDownloader.FixUserName( tbUserName.Text );
             this.DisEnControls();
             Thread thread = new Thread( this.Work );
             thread.SetApartmentState( ApartmentState.STA );

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -155,6 +156,13 @@ namespace TwitterPhotoDownloader
                 this.DownloadFile( photosUrls[ i ], savePath );
                 this.Progress.CurrentProgress = i + 1;
             }
+        }
+
+        public static string FixUserName( string url )
+        {
+            var regex = new Regex( "http(s)?://twitter\\.com/(\\w+)(/media)?" );
+            Match match = regex.Match( url );
+            return match.Success ? match.Groups[ 2 ].ToString() : url;
         }
     }
 }
