@@ -16,7 +16,7 @@ namespace TwitterPhotoDownloader
     {
         private TwitterDownloader _twitterDownloader;
         private string _language = "en-GB";
-        private const string Version = "1.0.0 Beta 1";
+        private const string Version = "1.0.0";
         private Thread _thread;
 
         public FrmMain()
@@ -161,6 +161,14 @@ namespace TwitterPhotoDownloader
         {
             MessageBox.Show( strings.AboutInfo.FixNewLines() + Version, strings.About, MessageBoxButtons.OK,
                 MessageBoxIcon.Information );
+        }
+
+        private void btnSelectDir_Click( object sender, EventArgs e )
+        {
+            if ( fbd1.ShowDialog() == DialogResult.OK )
+            {
+                tbSavePath.Text = fbd1.SelectedPath;
+            }
         }
     }
 }

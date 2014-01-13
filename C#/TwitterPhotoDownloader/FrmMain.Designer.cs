@@ -45,6 +45,7 @@
             this.tsmiEng = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRus = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fbd1 = new System.Windows.Forms.FolderBrowserDialog();
             this.msMainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,6 +75,7 @@
             resources.ApplyResources(this.btnSelectDir, "btnSelectDir");
             this.btnSelectDir.Name = "btnSelectDir";
             this.btnSelectDir.UseVisualStyleBackColor = true;
+            this.btnSelectDir.Click += new System.EventHandler(this.btnSelectDir_Click);
             // 
             // pb1
             // 
@@ -182,6 +184,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiEng;
         private System.Windows.Forms.ToolStripMenuItem tsmiRus;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.FolderBrowserDialog fbd1;
     }
 }
 
