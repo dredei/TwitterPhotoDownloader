@@ -88,6 +88,11 @@ namespace TwitterPhotoDownloader
             }
         }
 
+        /// <summary>
+        /// Download file
+        /// </summary>
+        /// <param name="fileUrl">URL to file</param>
+        /// <param name="savePath">Where to save</param>
         private void DownloadFile( string fileUrl, string savePath )
         {
             if ( !Directory.Exists( savePath ) )
@@ -99,13 +104,20 @@ namespace TwitterPhotoDownloader
             Thread.Sleep( 500 );
         }
 
+        /// <summary>
+        /// Get photos from account
+        /// </summary>
+        /// <param name="username">Twitter username</param>
+        /// <returns></returns>
         private List<string> GetPhotos( string username )
         {
+            // loading media page
             var photosUrls = new List<string>();
             this._loading = true;
             this._webBrowser.Navigate( "https://twitter.com/" + username + "/media" );
             this._loadingTimer.Start();
             this.WaitForLoading();
+
             if ( this._webBrowser.Document == null || this._webBrowser.Document.Body == null ||
                  this._webBrowser.Document.Window == null )
             {
@@ -114,6 +126,7 @@ namespace TwitterPhotoDownloader
             int oldHeight;
             int newHeight;
             int page = 0;
+            // scrolling down the page until all photos won't be loaded (oldHeight == newHeight)
             do
             {
                 page++;
@@ -127,7 +140,7 @@ namespace TwitterPhotoDownloader
                 Application.DoEvents();
             }
             while ( newHeight > oldHeight );
-
+            
             var elements = this._webBrowser.Document.Body.GetElementsByTagName( "span" );
             foreach ( HtmlElement element in elements )
             {
