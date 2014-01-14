@@ -78,6 +78,7 @@ namespace TwitterPhotoDownloader
             try
             {
                 this._twitterDownloader = new TwitterDownloader();
+                GC.Collect();
                 this._twitterDownloader.DownloadPhotos( this.tbUserName.Text, this.tbSavePath.Text );
                 this.tmrProgress.Stop();
                 MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
@@ -94,6 +95,7 @@ namespace TwitterPhotoDownloader
                     this.lblInfo.Text = strings.Points;
                     this.pb1.Value = 0;
                     this.pb1.Style = ProgressBarStyle.Blocks;
+                    this.pb1.SetTaskbarProgress();
                     this.DisEnControls();
                 } ) );
             }
