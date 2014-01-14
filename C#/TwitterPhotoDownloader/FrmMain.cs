@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
+using Windows7.DesktopIntegration.WindowsForms;
 using ExtensionMethods;
 using Ini;
 
@@ -19,6 +20,7 @@ namespace TwitterPhotoDownloader
         private const string Version = "1.0.1";
         private Thread _thread;
         private Thread _checkInternetThread;
+        private readonly bool _possibleProgressInTaskBar;
 
         public FrmMain()
         {
@@ -26,6 +28,10 @@ namespace TwitterPhotoDownloader
             Thread.CurrentThread.CurrentUICulture = new CultureInfo( this._language );
             this.InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
+            if ( Environment.OSVersion.Version >= new Version( 6, 1 ) ) // if version current version >= win7
+            {
+                this._possibleProgressInTaskBar = true;
+            }
         }
 
         private void ChangeLanguage( string lang )
@@ -131,6 +137,10 @@ namespace TwitterPhotoDownloader
                     this.pb1.Maximum = this._twitterDownloader.Progress.MaxProgress;
                     this.pb1.Value = this._twitterDownloader.Progress.CurrentProgress;
                     break;
+            }
+            if ( this._possibleProgressInTaskBar )
+            {
+                this.pb1.SetTaskbarProgress();
             }
         }
 
