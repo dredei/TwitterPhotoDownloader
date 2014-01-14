@@ -18,7 +18,7 @@ namespace TwitterPhotoDownloader
     {
         private TwitterDownloader _twitterDownloader;
         private string _language = "en-GB";
-        private const string Version = "1.0.1";
+        private const string Version = "1.0.2";
         private Thread _thread;
         private Thread _checkInternetThread;
         private readonly bool _possibleProgressInTaskBar;
@@ -105,26 +105,27 @@ namespace TwitterPhotoDownloader
             }
             catch ( Exception exception )
             {
+                if ( exception is ThreadAbortException )
+                {
+                    return;
+                }
                 MessageBox.Show( exception.Message, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
-            finally
+            this.Invoke( new MethodInvoker( delegate()
             {
-                this.Invoke( new MethodInvoker( delegate()
+                this.tmrProgress.Stop();
+                this.lblInfo.Text = strings.Points;
+                this.pb1.Value = 0;
+                this.pb1.Style = ProgressBarStyle.Blocks;
+                this.DisEnControls();
+                if ( this._possibleProgressInTaskBar )
                 {
-                    this.tmrProgress.Stop();
-                    this.lblInfo.Text = strings.Points;
-                    this.pb1.Value = 0;
-                    this.pb1.Style = ProgressBarStyle.Blocks;
-                    this.DisEnControls();
-                    if ( this._possibleProgressInTaskBar )
-                    {
-                        this.pb1.SetTaskbarProgress();
-                    }
-                } ) );
-                this._twitterDownloader.Dispose();
-                this._twitterDownloader = null;
-                GC.Collect();
-            }
+                    this.pb1.SetTaskbarProgress();
+                }
+            } ) );
+            this._twitterDownloader.Dispose();
+            this._twitterDownloader = null;
+            GC.Collect();
         }
 
         private void DisEnControls()
