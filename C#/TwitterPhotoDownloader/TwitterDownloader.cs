@@ -22,6 +22,8 @@ namespace TwitterPhotoDownloader
         public int CurrentProgress { get; set; }
         public int MaxProgress { get; set; }
         public int Page { get; set; }
+        public int Downloaded { get; set; }
+        public int Errors { get; set; }
         public ProgressType Type { get; set; }
     }
 
@@ -103,11 +105,10 @@ namespace TwitterPhotoDownloader
             }
             catch
             {
+                this.Progress.Errors++;
+                return;
             }
-            finally
-            {
-                Thread.Sleep( 700 );
-            }
+            this.Progress.Downloaded++;
         }
 
         /// <summary>
@@ -180,6 +181,7 @@ namespace TwitterPhotoDownloader
             {
                 this.DownloadFile( photosUrls[ i ], savePath );
                 this.Progress.CurrentProgress = i + 1;
+                Thread.Sleep( 700 );
             }
             photosUrls.Clear();
         }

@@ -47,6 +47,9 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fbd1 = new System.Windows.Forms.FolderBrowserDialog();
             this.tmrCheckInternet = new System.Windows.Forms.Timer(this.components);
+            this.lblImgErrors = new System.Windows.Forms.Label();
+            this.lblImgDownloaded = new System.Windows.Forms.Label();
+            this.lblImgFound = new System.Windows.Forms.Label();
             this.msMainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -149,10 +152,31 @@
             this.tmrCheckInternet.Enabled = true;
             this.tmrCheckInternet.Tick += new System.EventHandler(this.tmrCheckInternet_Tick);
             // 
+            // lblImgErrors
+            // 
+            resources.ApplyResources(this.lblImgErrors, "lblImgErrors");
+            this.lblImgErrors.ForeColor = System.Drawing.Color.Red;
+            this.lblImgErrors.Name = "lblImgErrors";
+            // 
+            // lblImgDownloaded
+            // 
+            resources.ApplyResources(this.lblImgDownloaded, "lblImgDownloaded");
+            this.lblImgDownloaded.ForeColor = System.Drawing.Color.Green;
+            this.lblImgDownloaded.Name = "lblImgDownloaded";
+            // 
+            // lblImgFound
+            // 
+            resources.ApplyResources(this.lblImgFound, "lblImgFound");
+            this.lblImgFound.ForeColor = System.Drawing.Color.Blue;
+            this.lblImgFound.Name = "lblImgFound";
+            // 
             // FrmMain
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblImgErrors);
+            this.Controls.Add(this.lblImgDownloaded);
+            this.Controls.Add(this.lblImgFound);
             this.Controls.Add(this.lblSite);
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.btnStart);
@@ -194,6 +218,9 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.FolderBrowserDialog fbd1;
         private System.Windows.Forms.Timer tmrCheckInternet;
+        private System.Windows.Forms.Label lblImgErrors;
+        private System.Windows.Forms.Label lblImgDownloaded;
+        private System.Windows.Forms.Label lblImgFound;
     }
 }
 

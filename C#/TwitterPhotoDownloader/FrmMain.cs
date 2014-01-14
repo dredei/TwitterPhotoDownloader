@@ -34,6 +34,12 @@ namespace TwitterPhotoDownloader
             }
         }
 
+        private void AutoPosLabels()
+        {
+            lblImgDownloaded.Left = lblImgFound.Right + 6;
+            lblImgErrors.Left = lblImgDownloaded.Right + 6;
+        }
+
         private void ChangeLanguage( string lang )
         {
             this._language = lang;
@@ -133,21 +139,26 @@ namespace TwitterPhotoDownloader
         {
             if ( this._twitterDownloader != null )
             {
-                switch ( this._twitterDownloader.Progress.Type )
+                ProgressC progress = this._twitterDownloader.Progress;
+                switch ( progress.Type )
                 {
                     case ProgressType.GettingImages:
-                        this.lblInfo.Text = string.Format( strings.GettingImages, this._twitterDownloader.Progress.Page );
+                        this.lblInfo.Text = string.Format( strings.GettingImages, progress.Page );
                         this.pb1.Style = ProgressBarStyle.Marquee;
                         break;
 
                     case ProgressType.DownloadingImages:
                         this.lblInfo.Text = strings.DownloadingImages;
                         this.pb1.Style = ProgressBarStyle.Blocks;
-                        this.pb1.Maximum = this._twitterDownloader.Progress.MaxProgress;
-                        this.pb1.Value = this._twitterDownloader.Progress.CurrentProgress;
+                        this.pb1.Maximum = progress.MaxProgress;
+                        this.pb1.Value = progress.CurrentProgress;
+                        this.lblImgFound.Text = "Найдено: " + progress.MaxProgress;
+                        this.lblImgDownloaded.Text = "Скачано: " + progress.Downloaded;
+                        this.lblImgErrors.Text = "Ошибок: " + progress.Errors;
                         break;
                 }
             }
+            this.AutoPosLabels();
             if ( this._possibleProgressInTaskBar )
             {
                 this.pb1.SetTaskbarProgress();
