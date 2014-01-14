@@ -161,6 +161,7 @@ namespace TwitterPhotoDownloader
             {
                 savePath = savePath.Remove( savePath.Length - 1, 1 );
             }
+            this.DisableIEImages();
             this.Progress.CurrentProgress = 0;
             this.Progress.Type = ProgressType.GettingImages;
             List<string> photosUrls = this.GetPhotos( username );
@@ -170,6 +171,7 @@ namespace TwitterPhotoDownloader
             {
                 Directory.CreateDirectory( savePath );
             }
+            this.EnableIEImages();
             for ( int i = 0; i < photosUrls.Count; i++ )
             {
                 this.DownloadFile( photosUrls[ i ], savePath );

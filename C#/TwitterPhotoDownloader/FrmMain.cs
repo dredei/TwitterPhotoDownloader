@@ -16,7 +16,7 @@ namespace TwitterPhotoDownloader
     {
         private TwitterDownloader _twitterDownloader;
         private string _language = "en-GB";
-        private const string Version = "1.0.0";
+        private const string Version = "1.0.1";
         private Thread _thread;
 
         public FrmMain()
