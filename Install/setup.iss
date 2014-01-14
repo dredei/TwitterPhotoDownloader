@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "TwitterPhotoDownloader"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "dredei, http://www.softez.pp.ua/"
 #define MyAppURL "http://www.softez.pp.ua/"
 #define MyAppExeName "TwitterPhotoDownloader.exe"
@@ -32,6 +32,11 @@ SolidCompression=yes
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 
+[CustomMessages]
+russian.VisitHomePage=Посетить домашнюю страницу
+
+english.VisitHomePage=Visit home page
+
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
@@ -39,6 +44,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "Release\TwitterPhotoDownloader.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "Settings_RuLang.ini"; DestDir: "{app}"; DestName: "Settings.ini"; Flags: onlyifdoesntexist; Languages: russian
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -50,4 +56,7 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-Filename: "{#MyAppUrl}"; Flags: shellexec runasoriginaluser postinstall; Description: "Open home page."
+Filename: "{#MyAppUrl}"; Flags: shellexec runasoriginaluser postinstall; Description: "{cm:VisitHomePage}"
+
+[UninstallDelete]
+Type: filesandordirs; Name: "{app}"
