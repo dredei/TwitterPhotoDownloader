@@ -153,4 +153,16 @@
   <data name="UnableAccess" xml:space="preserve">
     <value>Невозможно получить доступ к Twitter!</value>
   </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Скопировать в буфер обмена ссылки на фото, которые не удалось скачать?</value>
+  </data>
+  <data name="Found" xml:space="preserve">
+    <value>Найдено: </value>
+  </data>
+  <data name="Downloaded" xml:space="preserve">
+    <value>Скачано: </value>
+  </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Ошибок: </value>
+  </data>
 </root>

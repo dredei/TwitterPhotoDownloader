@@ -90,8 +90,7 @@ namespace TwitterPhotoDownloader
                 MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
                 if ( this._twitterDownloader.ErrorsLinks.Count > 0 )
                 {
-                    DialogResult dr = MessageBox.Show( "Скопировать в буфер обмена ссылки на фото, которые не удалось скачать?",
-                        strings.Error, MessageBoxButtons.YesNo, MessageBoxIcon.Question );
+                    DialogResult dr = MessageBox.Show( strings.CopyToClipboard, strings.Error, MessageBoxButtons.YesNo, MessageBoxIcon.Question );
                     if ( dr != DialogResult.Yes )
                     {
                         return;
@@ -168,9 +167,9 @@ namespace TwitterPhotoDownloader
                         this.pb1.Style = ProgressBarStyle.Blocks;
                         this.pb1.Maximum = progress.MaxProgress;
                         this.pb1.Value = progress.CurrentProgress;
-                        this.lblImgFound.Text = "Найдено: " + progress.MaxProgress;
-                        this.lblImgDownloaded.Text = "Скачано: " + progress.Downloaded;
-                        this.lblImgErrors.Text = "Ошибок: " + this._twitterDownloader.ErrorsLinks.Count;
+                        this.lblImgFound.Text = strings.Found + progress.MaxProgress;
+                        this.lblImgDownloaded.Text = strings.Downloaded + progress.Downloaded;
+                        this.lblImgErrors.Text = strings.Errors + this._twitterDownloader.ErrorsLinks.Count;
                         break;
                 }
             }

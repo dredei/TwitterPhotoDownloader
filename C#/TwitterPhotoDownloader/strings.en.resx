@@ -123,8 +123,14 @@
   <data name="AboutInfo" xml:space="preserve">
     <value>Author: dredei\nVersion: </value>
   </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Copy to clipboard links to photos that failed to download?</value>
+  </data>
   <data name="Done" xml:space="preserve">
     <value>Done!</value>
+  </data>
+  <data name="Downloaded" xml:space="preserve">
+    <value>Downloaded: </value>
   </data>
   <data name="DownloadingImages" xml:space="preserve">
     <value>Download images...</value>
@@ -132,8 +138,14 @@
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Errors: </value>
+  </data>
   <data name="FillTheFields" xml:space="preserve">
     <value>Fill the fields!</value>
+  </data>
+  <data name="Found" xml:space="preserve">
+    <value>Found: </value>
   </data>
   <data name="GettingImages" xml:space="preserve">
     <value>Getting images (page {0})...</value>

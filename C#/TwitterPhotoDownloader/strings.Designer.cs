@@ -79,11 +79,29 @@ namespace TwitterPhotoDownloader {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Скопировать в буфер обмена ссылки на фото, которые не удалось скачать?.
+        /// </summary>
+        internal static string CopyToClipboard {
+            get {
+                return ResourceManager.GetString("CopyToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Завершено!.
         /// </summary>
         internal static string Done {
             get {
                 return ResourceManager.GetString("Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Скачано: .
+        /// </summary>
+        internal static string Downloaded {
+            get {
+                return ResourceManager.GetString("Downloaded", resourceCulture);
             }
         }
         
@@ -106,11 +124,29 @@ namespace TwitterPhotoDownloader {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибок: .
+        /// </summary>
+        internal static string Errors {
+            get {
+                return ResourceManager.GetString("Errors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Заполните поля!.
         /// </summary>
         internal static string FillTheFields {
             get {
                 return ResourceManager.GetString("FillTheFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Найдено: .
+        /// </summary>
+        internal static string Found {
+            get {
+                return ResourceManager.GetString("Found", resourceCulture);
             }
         }
         
