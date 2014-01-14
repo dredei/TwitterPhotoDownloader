@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Windows7.DesktopIntegration.WindowsForms;
@@ -87,6 +88,21 @@ namespace TwitterPhotoDownloader
                 this._twitterDownloader.DownloadPhotos( this.tbUserName.Text, this.tbSavePath.Text );
                 this.tmrProgress.Stop();
                 MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
+                if ( this._twitterDownloader.ErrorsLinks.Count > 0 )
+                {
+                    DialogResult dr = MessageBox.Show( "Скопировать в буфер обмена ссылки на фото, которые не удалось скачать?",
+                        strings.Error, MessageBoxButtons.YesNo, MessageBoxIcon.Question );
+                    if ( dr != DialogResult.Yes )
+                    {
+                        return;
+                    }
+                    StringBuilder sb = new StringBuilder();
+                    foreach ( string s in this._twitterDownloader.ErrorsLinks )
+                    {
+                        sb.AppendLine( s );
+                    }
+                    Clipboard.SetText( sb.ToString() );
+                }
             }
             catch ( Exception exception )
             {
@@ -154,7 +170,7 @@ namespace TwitterPhotoDownloader
                         this.pb1.Value = progress.CurrentProgress;
                         this.lblImgFound.Text = "Найдено: " + progress.MaxProgress;
                         this.lblImgDownloaded.Text = "Скачано: " + progress.Downloaded;
-                        this.lblImgErrors.Text = "Ошибок: " + progress.Errors;
+                        this.lblImgErrors.Text = "Ошибок: " + this._twitterDownloader.ErrorsLinks.Count;
                         break;
                 }
             }

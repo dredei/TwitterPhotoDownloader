@@ -23,7 +23,6 @@ namespace TwitterPhotoDownloader
         public int MaxProgress { get; set; }
         public int Page { get; set; }
         public int Downloaded { get; set; }
-        public int Errors { get; set; }
         public ProgressType Type { get; set; }
     }
 
@@ -38,6 +37,7 @@ namespace TwitterPhotoDownloader
     public class TwitterDownloader : IDisposable
     {
         public ProgressC Progress;
+        public List<string> ErrorsLinks;
 
         private WebBrowser _webBrowser;
         private Timer _loadingTimer;
@@ -53,6 +53,7 @@ namespace TwitterPhotoDownloader
             this._loadingTimer = new Timer { Interval = 3500 };
             this._loadingTimer.Tick += this._loadingTimer_Tick;
             this._loading = false;
+            this.ErrorsLinks = new List<string>();
         }
 
         private void _loadingTimer_Tick( object sender, EventArgs e )
@@ -105,7 +106,7 @@ namespace TwitterPhotoDownloader
             }
             catch
             {
-                this.Progress.Errors++;
+                this.ErrorsLinks.Add( fileUrl );
                 return;
             }
             this.Progress.Downloaded++;
@@ -245,6 +246,8 @@ namespace TwitterPhotoDownloader
                 this._loadingTimer = null;
                 this.Progress = null;
                 this._disposed = true;
+                this.ErrorsLinks.Clear();
+                this.ErrorsLinks = null;
             }
         }
 
