@@ -170,5 +170,21 @@ namespace TwitterPhotoDownloader
                 tbSavePath.Text = fbd1.SelectedPath;
             }
         }
+
+        private void tbUserName_KeyDown( object sender, KeyEventArgs e )
+        {
+            if ( e.KeyCode == Keys.Enter )
+            {
+                btnStart.PerformClick();
+            }
+        }
+
+        private void tbSavePath_KeyDown( object sender, KeyEventArgs e )
+        {
+            if ( e.KeyCode == Keys.Enter )
+            {
+                btnStart.PerformClick();
+            }
+        }
     }
 }

@@ -58,6 +58,7 @@
             // 
             resources.ApplyResources(this.tbUserName, "tbUserName");
             this.tbUserName.Name = "tbUserName";
+            this.tbUserName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbUserName_KeyDown);
             // 
             // lblSavePath
             // 
@@ -68,6 +69,7 @@
             // 
             resources.ApplyResources(this.tbSavePath, "tbSavePath");
             this.tbSavePath.Name = "tbSavePath";
+            this.tbSavePath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSavePath_KeyDown);
             // 
             // btnSelectDir
             // 
