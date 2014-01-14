@@ -70,7 +70,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="TwitterDownloader.cs" />
+    <Compile Include="TwitterDownloader.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="FrmMain.en-GB.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>

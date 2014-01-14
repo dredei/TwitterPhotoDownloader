@@ -100,6 +100,7 @@ namespace TwitterPhotoDownloader
             {
                 this._webClient.DownloadFile( fileUrl, fileName );
             }
+            catch { }
             finally
             {
                 Thread.Sleep( 1000 );
