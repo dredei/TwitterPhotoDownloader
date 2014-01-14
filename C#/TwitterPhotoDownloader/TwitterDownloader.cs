@@ -185,5 +185,23 @@ namespace TwitterPhotoDownloader
             Match match = regex.Match( url );
             return match.Success ? match.Groups[ 2 ].ToString() : url;
         }
+
+        public static bool CheckForInternetConnection()
+        {
+            try
+            {
+                using ( var client = new WebClient() )
+                {
+                    using ( var stream = client.OpenRead( "https://twitter.com/" ) )
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

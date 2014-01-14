@@ -18,6 +18,7 @@ namespace TwitterPhotoDownloader
         private string _language = "en-GB";
         private const string Version = "1.0.1";
         private Thread _thread;
+        private Thread _checkInternetThread;
 
         public FrmMain()
         {
@@ -145,6 +146,10 @@ namespace TwitterPhotoDownloader
             {
                 this._thread.Abort();
             }
+            if ( this._checkInternetThread != null )
+            {
+                this._checkInternetThread.Abort();
+            }
         }
 
         private void tsmiEng_Click( object sender, EventArgs e )
@@ -165,9 +170,9 @@ namespace TwitterPhotoDownloader
 
         private void btnSelectDir_Click( object sender, EventArgs e )
         {
-            if ( fbd1.ShowDialog() == DialogResult.OK )
+            if ( this.fbd1.ShowDialog() == DialogResult.OK )
             {
-                tbSavePath.Text = fbd1.SelectedPath;
+                this.tbSavePath.Text = this.fbd1.SelectedPath;
             }
         }
 
@@ -175,7 +180,7 @@ namespace TwitterPhotoDownloader
         {
             if ( e.KeyCode == Keys.Enter )
             {
-                btnStart.PerformClick();
+                this.btnStart.PerformClick();
             }
         }
 
@@ -183,8 +188,27 @@ namespace TwitterPhotoDownloader
         {
             if ( e.KeyCode == Keys.Enter )
             {
-                btnStart.PerformClick();
+                this.btnStart.PerformClick();
             }
+        }
+
+        private void tmrCheckInternet_Tick( object sender, EventArgs e )
+        {
+            this.tmrCheckInternet.Stop();
+            this._checkInternetThread = new Thread( delegate()
+            {
+                if ( TwitterDownloader.CheckForInternetConnection() )
+                {
+                    this.btnStart.Enabled = true;
+                }
+                else
+                {
+                    this.tmrCheckInternet.Interval = 5000;
+                    MessageBox.Show( strings.UnableAccess, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
+                    this.tmrCheckInternet.Start();
+                }
+            } ) { Priority = ThreadPriority.Lowest };
+            this._checkInternetThread.Start();
         }
     }
 }

@@ -150,4 +150,7 @@
   <data name="About" xml:space="preserve">
     <value>О программе...</value>
   </data>
+  <data name="UnableAccess" xml:space="preserve">
+    <value>Невозможно получить доступ к Twitter!</value>
+  </data>
 </root>

@@ -46,6 +46,7 @@
             this.tsmiRus = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fbd1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.tmrCheckInternet = new System.Windows.Forms.Timer(this.components);
             this.msMainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -143,6 +144,11 @@
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // tmrCheckInternet
+            // 
+            this.tmrCheckInternet.Enabled = true;
+            this.tmrCheckInternet.Tick += new System.EventHandler(this.tmrCheckInternet_Tick);
+            // 
             // FrmMain
             // 
             resources.ApplyResources(this, "$this");
@@ -187,6 +193,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiRus;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.FolderBrowserDialog fbd1;
+        private System.Windows.Forms.Timer tmrCheckInternet;
     }
 }
 

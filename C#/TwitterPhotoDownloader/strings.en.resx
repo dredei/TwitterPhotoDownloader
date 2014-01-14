@@ -147,6 +147,9 @@
   <data name="RestartApp" xml:space="preserve">
     <value>The application will be restarted! Continue?</value>
   </data>
+  <data name="UnableAccess" xml:space="preserve">
+    <value>Unable to access Twitter!</value>
+  </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
   </data>

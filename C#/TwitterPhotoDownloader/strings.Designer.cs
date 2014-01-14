@@ -151,6 +151,15 @@ namespace TwitterPhotoDownloader {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Невозможно получить доступ к Twitter!.
+        /// </summary>
+        internal static string UnableAccess {
+            get {
+                return ResourceManager.GetString("UnableAccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Предупреждение.
         /// </summary>
         internal static string Warning {
