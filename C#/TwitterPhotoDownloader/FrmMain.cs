@@ -78,7 +78,6 @@ namespace TwitterPhotoDownloader
             try
             {
                 this._twitterDownloader = new TwitterDownloader();
-                GC.Collect();
                 this._twitterDownloader.DownloadPhotos( this.tbUserName.Text, this.tbSavePath.Text );
                 this.tmrProgress.Stop();
                 MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
@@ -95,9 +94,15 @@ namespace TwitterPhotoDownloader
                     this.lblInfo.Text = strings.Points;
                     this.pb1.Value = 0;
                     this.pb1.Style = ProgressBarStyle.Blocks;
-                    this.pb1.SetTaskbarProgress();
                     this.DisEnControls();
+                    if ( this._possibleProgressInTaskBar )
+                    {
+                        this.pb1.SetTaskbarProgress();
+                    }
                 } ) );
+                this._twitterDownloader.Dispose();
+                this._twitterDownloader = null;
+                GC.Collect();
             }
         }
 
@@ -126,19 +131,22 @@ namespace TwitterPhotoDownloader
 
         private void tmrProgress_Tick( object sender, EventArgs e )
         {
-            switch ( this._twitterDownloader.Progress.Type )
+            if ( this._twitterDownloader != null )
             {
-                case ProgressType.GettingImages:
-                    this.lblInfo.Text = string.Format( strings.GettingImages, this._twitterDownloader.Progress.Page );
-                    this.pb1.Style = ProgressBarStyle.Marquee;
-                    break;
+                switch ( this._twitterDownloader.Progress.Type )
+                {
+                    case ProgressType.GettingImages:
+                        this.lblInfo.Text = string.Format( strings.GettingImages, this._twitterDownloader.Progress.Page );
+                        this.pb1.Style = ProgressBarStyle.Marquee;
+                        break;
 
-                case ProgressType.DownloadingImages:
-                    this.lblInfo.Text = strings.DownloadingImages;
-                    this.pb1.Style = ProgressBarStyle.Blocks;
-                    this.pb1.Maximum = this._twitterDownloader.Progress.MaxProgress;
-                    this.pb1.Value = this._twitterDownloader.Progress.CurrentProgress;
-                    break;
+                    case ProgressType.DownloadingImages:
+                        this.lblInfo.Text = strings.DownloadingImages;
+                        this.pb1.Style = ProgressBarStyle.Blocks;
+                        this.pb1.Maximum = this._twitterDownloader.Progress.MaxProgress;
+                        this.pb1.Value = this._twitterDownloader.Progress.CurrentProgress;
+                        break;
+                }
             }
             if ( this._possibleProgressInTaskBar )
             {

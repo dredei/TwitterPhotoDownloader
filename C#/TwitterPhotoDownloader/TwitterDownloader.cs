@@ -33,14 +33,15 @@ namespace TwitterPhotoDownloader
 
     #endregion
 
-    public class TwitterDownloader
+    public class TwitterDownloader : IDisposable
     {
-        public readonly ProgressC Progress;
+        public ProgressC Progress;
 
-        private readonly WebBrowser _webBrowser;
-        private readonly Timer _loadingTimer;
-        private readonly WebClient _webClient;
+        private WebBrowser _webBrowser;
+        private Timer _loadingTimer;
+        private WebClient _webClient;
         private bool _loading;
+        private bool _disposed;
 
         public TwitterDownloader()
         {
@@ -100,10 +101,12 @@ namespace TwitterPhotoDownloader
             {
                 this._webClient.DownloadFile( fileUrl, fileName );
             }
-            catch { }
+            catch
+            {
+            }
             finally
             {
-                Thread.Sleep( 1000 );
+                Thread.Sleep( 700 );
             }
         }
 
@@ -178,6 +181,7 @@ namespace TwitterPhotoDownloader
                 this.DownloadFile( photosUrls[ i ], savePath );
                 this.Progress.CurrentProgress = i + 1;
             }
+            photosUrls.Clear();
         }
 
         public static string FixUserName( string url )
@@ -204,5 +208,44 @@ namespace TwitterPhotoDownloader
                 return false;
             }
         }
+
+        #region Members
+
+        public void Dispose()
+        {
+            this.Dispose( true );
+            GC.SuppressFinalize( this );
+        }
+
+        protected virtual void Dispose( bool disposing )
+        {
+            if ( !this._disposed )
+            {
+                if ( disposing )
+                {
+                    if ( this._webBrowser != null )
+                    {
+                        this._webBrowser.Dispose();
+                    }
+                    if ( this._webClient != null )
+                    {
+                        this._webClient.Dispose();
+                    }
+                    if ( this._loadingTimer != null )
+                    {
+                        this._loadingTimer.Dispose();
+                    }
+                }
+
+                // Indicate that the instance has been disposed.
+                this._webBrowser = null;
+                this._webClient = null;
+                this._loadingTimer = null;
+                this.Progress = null;
+                this._disposed = true;
+            }
+        }
+
+        #endregion
     }
 }
