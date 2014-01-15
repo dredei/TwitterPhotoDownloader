@@ -165,4 +165,7 @@
   <data name="Errors" xml:space="preserve">
     <value>Ошибок: </value>
   </data>
+  <data name="UpdateIe" xml:space="preserve">
+    <value>Обновите IE до версии 8!</value>
+  </data>
 </root>

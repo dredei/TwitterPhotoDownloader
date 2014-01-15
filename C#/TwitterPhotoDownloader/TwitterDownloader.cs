@@ -50,7 +50,7 @@ namespace TwitterPhotoDownloader
             this._webBrowser = new WebBrowser();
             this._webClient = new WebClient();
             this.Progress = new ProgressC();
-            this._loadingTimer = new Timer { Interval = 3500 };
+            this._loadingTimer = new Timer { Interval = 4000 };
             this._loadingTimer.Tick += this._loadingTimer_Tick;
             this._loading = false;
             this.ErrorsLinks = new List<string>();
@@ -187,6 +187,8 @@ namespace TwitterPhotoDownloader
             photosUrls.Clear();
         }
 
+        #region Static methods
+
         public static string FixUserName( string url )
         {
             var regex = new Regex( "http(s)?://twitter\\.com/(\\w+)(/media)?" );
@@ -211,6 +213,72 @@ namespace TwitterPhotoDownloader
                 return false;
             }
         }
+
+        public static Version GetIEVersion()
+        {
+            const string key = @"Software\Microsoft\Internet Explorer";
+            RegistryKey dkey = Registry.LocalMachine.OpenSubKey( key, false );
+            if ( dkey != null )
+            {
+                string data = dkey.GetValue( "Version" ).ToString();
+                return Version.Parse( data );
+            }
+            return new Version();
+        }
+
+        public static void SetIE8KeyforWebBrowserControl()
+        {
+            RegistryKey Regkey = null;
+            try
+            {
+                //For 64 bit Machine 
+                if ( Environment.Is64BitOperatingSystem )
+                {
+                    Regkey =
+                        Registry.LocalMachine.OpenSubKey(
+                            @"SOFTWARE\\Wow6432Node\\Microsoft\\Internet Explorer\\MAIN\\FeatureControl\\FEATURE_BROWSER_EMULATION",
+                            true );
+                }
+                else //For 32 bit Machine 
+                {
+                    Regkey =
+                        Registry.LocalMachine.OpenSubKey(
+                            @"SOFTWARE\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION",
+                            true );
+                }
+                //If the path is not correct or 
+                //If user't have priviledges to access registry 
+                if ( Regkey == null )
+                {
+                    return;
+                }
+                string FindAppkey = Convert.ToString( Regkey.GetValue( "TwitterPhotoDownloader.exe" ) );
+                //Check if key is already present 
+                if ( FindAppkey == "8000" )
+                {
+                    Regkey.Close();
+                    return;
+                }
+                //If key is not present add the key , Kev value 8000-Decimal 
+                if ( string.IsNullOrEmpty( FindAppkey ) )
+                {
+                    Regkey.SetValue( "TwitterPhotoDownloader.exe", unchecked( 0x1F40 ), RegistryValueKind.DWord );
+                }
+            }
+            catch ( Exception ex )
+            {
+                Console.WriteLine( ex.Message );
+            }
+            finally
+            {
+                if ( Regkey != null )
+                {
+                    Regkey.Close();
+                }
+            }
+        }
+
+        #endregion
 
         #region Members
 

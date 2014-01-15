@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Windows7.DesktopIntegration.WindowsForms;
 using ExtensionMethods;
 using Ini;
+using Microsoft.Win32;
 
 #endregion
 
@@ -33,12 +34,29 @@ namespace TwitterPhotoDownloader
             {
                 this._possibleProgressInTaskBar = true;
             }
+            this.UserForceIE8InXp();
+        }
+
+        private void UserForceIE8InXp()
+        {
+            if ( Environment.OSVersion.Version.Major == 5 && Environment.OSVersion.Version.Minor == 1 )
+            {
+                if ( TwitterDownloader.GetIEVersion() >= new Version( 8, 0 ) )
+                {
+                    TwitterDownloader.SetIE8KeyforWebBrowserControl();
+                }
+                else
+                {
+                    MessageBox.Show( strings.UpdateIe, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
+                    Environment.Exit( 0 );
+                }
+            }
         }
 
         private void AutoPosLabels()
         {
-            lblImgDownloaded.Left = lblImgFound.Right + 6;
-            lblImgErrors.Left = lblImgDownloaded.Right + 6;
+            this.lblImgDownloaded.Left = this.lblImgFound.Right + 6;
+            this.lblImgErrors.Left = this.lblImgDownloaded.Right + 6;
         }
 
         private void ChangeLanguage( string lang )
@@ -90,7 +108,8 @@ namespace TwitterPhotoDownloader
                 MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
                 if ( this._twitterDownloader.ErrorsLinks.Count > 0 )
                 {
-                    DialogResult dr = MessageBox.Show( strings.CopyToClipboard, strings.Error, MessageBoxButtons.YesNo, MessageBoxIcon.Question );
+                    DialogResult dr = MessageBox.Show( strings.CopyToClipboard, strings.Error, MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question );
                     if ( dr != DialogResult.Yes )
                     {
                         return;

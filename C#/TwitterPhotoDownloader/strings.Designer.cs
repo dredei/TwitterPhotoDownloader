@@ -196,6 +196,15 @@ namespace TwitterPhotoDownloader {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Обновите IE до версии 8!.
+        /// </summary>
+        internal static string UpdateIe {
+            get {
+                return ResourceManager.GetString("UpdateIe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Предупреждение.
         /// </summary>
         internal static string Warning {

@@ -162,6 +162,9 @@
   <data name="UnableAccess" xml:space="preserve">
     <value>Unable to access Twitter!</value>
   </data>
+  <data name="UpdateIe" xml:space="preserve">
+    <value>Update IE to version 8!</value>
+  </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
   </data>
