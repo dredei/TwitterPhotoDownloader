@@ -187,11 +187,11 @@ namespace TwitterPhotoDownloader
                         this.pb1.Style = ProgressBarStyle.Blocks;
                         this.pb1.Maximum = progress.MaxProgress;
                         this.pb1.Value = progress.CurrentProgress;
-                        this.lblImgFound.Text = strings.Found + progress.MaxProgress;
-                        this.lblImgDownloaded.Text = strings.Downloaded + progress.Downloaded;
-                        this.lblImgErrors.Text = strings.Errors + this._twitterDownloader.ErrorsLinks.Count;
                         break;
                 }
+                this.lblImgFound.Text = strings.Found + progress.MaxProgress;
+                this.lblImgDownloaded.Text = strings.Downloaded + progress.Downloaded;
+                this.lblImgErrors.Text = strings.Errors + this._twitterDownloader.ErrorsLinks.Count;
             }
             this.AutoPosLabels();
             if ( this._possibleProgressInTaskBar )
