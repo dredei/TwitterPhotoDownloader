@@ -19,7 +19,7 @@ namespace TwitterPhotoDownloader
     {
         private TwitterDownloader _twitterDownloader;
         private string _language = "en-GB";
-        private const string Version = "1.0.2";
+        private readonly Version _version = Version.Parse( "1.0.3" );
         private Thread _thread;
         private Thread _checkInternetThread;
         private readonly bool _possibleProgressInTaskBar;
@@ -34,22 +34,19 @@ namespace TwitterPhotoDownloader
             {
                 this._possibleProgressInTaskBar = true;
             }
-            this.UserForceIE8InXp();
+            this.CheckIEVersion();
         }
 
-        private void UserForceIE8InXp()
+        private void CheckIEVersion()
         {
+            if ( TwitterDownloader.GetIEVersion() < new Version( 8, 0 ) )
+            {
+                MessageBox.Show( strings.UpdateIe, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
+                Environment.Exit( 0 );
+            }
             if ( Environment.OSVersion.Version.Major == 5 && Environment.OSVersion.Version.Minor == 1 )
             {
-                if ( TwitterDownloader.GetIEVersion() >= new Version( 8, 0 ) )
-                {
-                    TwitterDownloader.SetIE8KeyforWebBrowserControl();
-                }
-                else
-                {
-                    MessageBox.Show( strings.UpdateIe, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
-                    Environment.Exit( 0 );
-                }
+                TwitterDownloader.SetIE8KeyforWebBrowserControl();
             }
         }
 
@@ -230,7 +227,7 @@ namespace TwitterPhotoDownloader
 
         private void aboutToolStripMenuItem_Click( object sender, EventArgs e )
         {
-            MessageBox.Show( strings.AboutInfo.FixNewLines() + Version, strings.About, MessageBoxButtons.OK,
+            MessageBox.Show( strings.AboutInfo.FixNewLines() + this._version, strings.About, MessageBoxButtons.OK,
                 MessageBoxIcon.Information );
         }
 
