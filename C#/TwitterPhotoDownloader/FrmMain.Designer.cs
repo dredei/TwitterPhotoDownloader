@@ -50,6 +50,7 @@
             this.lblImgErrors = new System.Windows.Forms.Label();
             this.lblImgDownloaded = new System.Windows.Forms.Label();
             this.lblImgFound = new System.Windows.Forms.Label();
+            this.lblRep = new System.Windows.Forms.Label();
             this.msMainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -170,10 +171,18 @@
             this.lblImgFound.ForeColor = System.Drawing.Color.Blue;
             this.lblImgFound.Name = "lblImgFound";
             // 
+            // lblRep
+            // 
+            resources.ApplyResources(this.lblRep, "lblRep");
+            this.lblRep.ForeColor = System.Drawing.Color.Blue;
+            this.lblRep.Name = "lblRep";
+            this.lblRep.Click += new System.EventHandler(this.lblRep_Click);
+            // 
             // FrmMain
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblRep);
             this.Controls.Add(this.lblImgErrors);
             this.Controls.Add(this.lblImgDownloaded);
             this.Controls.Add(this.lblImgFound);
@@ -221,6 +230,7 @@
         private System.Windows.Forms.Label lblImgErrors;
         private System.Windows.Forms.Label lblImgDownloaded;
         private System.Windows.Forms.Label lblImgFound;
+        private System.Windows.Forms.Label lblRep;
     }
 }
 

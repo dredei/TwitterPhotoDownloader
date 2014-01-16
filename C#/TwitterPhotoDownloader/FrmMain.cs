@@ -35,6 +35,7 @@ namespace TwitterPhotoDownloader
                 this._possibleProgressInTaskBar = true;
             }
             this.CheckIEVersion();
+            tbSavePath.Text = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) + "\\TwitterPhotoDownloader";
         }
 
         private void CheckIEVersion()
@@ -272,6 +273,11 @@ namespace TwitterPhotoDownloader
                 }
             } ) { Priority = ThreadPriority.Lowest };
             this._checkInternetThread.Start();
+        }
+
+        private void lblRep_Click( object sender, EventArgs e )
+        {
+            Process.Start( "https://github.com/dredei/TwitterPhotoDownloader" );
         }
     }
 }
