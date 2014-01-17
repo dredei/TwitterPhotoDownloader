@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using Windows7.DesktopIntegration.WindowsForms;
 using ExtensionMethods;
 using Ini;
-using Microsoft.Win32;
 
 #endregion
 
@@ -35,7 +34,8 @@ namespace TwitterPhotoDownloader
                 this._possibleProgressInTaskBar = true;
             }
             this.CheckIEVersion();
-            tbSavePath.Text = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) + "\\TwitterPhotoDownloader";
+            this.tbSavePath.Text = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) +
+                                   "\\TwitterPhotoDownloader";
         }
 
         private void CheckIEVersion()
@@ -105,16 +105,15 @@ namespace TwitterPhotoDownloader
                 {
                     DialogResult dr = MessageBox.Show( strings.CopyToClipboard, strings.Error, MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question );
-                    if ( dr != DialogResult.Yes )
+                    if ( dr == DialogResult.Yes )
                     {
-                        return;
+                        StringBuilder sb = new StringBuilder();
+                        foreach ( string s in this._twitterDownloader.ErrorsLinks )
+                        {
+                            sb.AppendLine( s );
+                        }
+                        Clipboard.SetText( sb.ToString() );
                     }
-                    StringBuilder sb = new StringBuilder();
-                    foreach ( string s in this._twitterDownloader.ErrorsLinks )
-                    {
-                        sb.AppendLine( s );
-                    }
-                    Clipboard.SetText( sb.ToString() );
                 }
             }
             catch ( Exception exception )
