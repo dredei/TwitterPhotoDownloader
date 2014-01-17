@@ -45,10 +45,7 @@ namespace TwitterPhotoDownloader
                 MessageBox.Show( strings.UpdateIe, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
                 Environment.Exit( 0 );
             }
-            if ( Environment.OSVersion.Version.Major == 5 && Environment.OSVersion.Version.Minor == 1 )
-            {
-                TwitterDownloader.SetIE8KeyforWebBrowserControl();
-            }
+            TwitterDownloader.SetIE8KeyforWebBrowserControl();
         }
 
         private void AutoPosLabels()

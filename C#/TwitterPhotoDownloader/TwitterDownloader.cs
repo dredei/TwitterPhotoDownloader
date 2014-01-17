@@ -34,7 +34,7 @@ namespace TwitterPhotoDownloader
 
     #endregion
 
-    public class TwitterDownloader : IDisposable
+    public sealed class TwitterDownloader : IDisposable
     {
         public ProgressC Progress;
         public List<string> ErrorsLinks;
@@ -288,7 +288,7 @@ namespace TwitterPhotoDownloader
             GC.SuppressFinalize( this );
         }
 
-        protected virtual void Dispose( bool disposing )
+        private void Dispose( bool disposing )
         {
             if ( !this._disposed )
             {
