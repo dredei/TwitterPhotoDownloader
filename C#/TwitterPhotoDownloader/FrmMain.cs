@@ -88,7 +88,7 @@ namespace TwitterPhotoDownloader
             try
             {
                 this._twitterDownloader = new TwitterDownloader();
-                bool res = await this._twitterDownloader.DownloadPhotos( this.tbUserName.Text, this.tbSavePath.Text );
+                await this._twitterDownloader.DownloadPhotos( this.tbUserName.Text, this.tbSavePath.Text );
                 this.tmrProgress.Stop();
                 MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
                 if ( this._twitterDownloader.ErrorsLinks.Count > 0 )

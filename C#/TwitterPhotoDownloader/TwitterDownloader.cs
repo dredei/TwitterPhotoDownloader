@@ -152,7 +152,7 @@ namespace TwitterPhotoDownloader
             return photosUrls;
         }
 
-        public async Task<bool> DownloadPhotos( string username, string savePath )
+        public async Task DownloadPhotos( string username, string savePath )
         {
             if ( savePath[ savePath.Length - 1 ] == '\\' )
             {
@@ -174,7 +174,6 @@ namespace TwitterPhotoDownloader
                 await Task.Delay( 1000 );
             }
             photosUrls.Clear();
-            return true;
         }
 
         #region Static methods
