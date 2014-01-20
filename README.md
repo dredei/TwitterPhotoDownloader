@@ -7,7 +7,7 @@ Download **all** photo of a user from media page.
 
 Using **Gecko** .
 
-Requires **.NET Framework 4.5** or higher.
+Requires **.NET Framework 4** or higher.
 
 ### Russian
 
@@ -15,4 +15,4 @@ Requires **.NET Framework 4.5** or higher.
 
 Используется **Gecko** .
 
-Для работы требуется **.NET Framework 4.5** или выше.
+Для работы требуется **.NET Framework 4** или выше.
