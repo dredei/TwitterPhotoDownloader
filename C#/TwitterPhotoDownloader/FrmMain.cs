@@ -19,7 +19,6 @@ namespace TwitterPhotoDownloader
     {
         private TwitterDownloader _twitterDownloader;
         private string _language = "en-GB";
-        private Thread _thread;
         private Thread _checkInternetThread;
         private readonly bool _possibleProgressInTaskBar;
         private readonly Version _version = Version.Parse( "1.1.0" );
@@ -190,10 +189,6 @@ namespace TwitterPhotoDownloader
         private void FrmMain_FormClosing( object sender, FormClosingEventArgs e )
         {
             this.SaveSettings();
-            if ( this._thread != null )
-            {
-                this._thread.Abort();
-            }
             if ( this._checkInternetThread != null )
             {
                 this._checkInternetThread.Abort();
