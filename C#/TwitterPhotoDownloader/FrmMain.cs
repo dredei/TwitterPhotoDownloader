@@ -80,14 +80,14 @@ namespace TwitterPhotoDownloader
             }
         }
 
-        private async Task Work()
+        private async Task WorkAsync()
         {
             this.LoadSettings();
             Thread.CurrentThread.CurrentUICulture = new CultureInfo( this._language );
             try
             {
                 this._twitterDownloader = new TwitterDownloader();
-                await this._twitterDownloader.DownloadPhotos( this.tbUserName.Text, this.tbSavePath.Text );
+                await this._twitterDownloader.DownloadPhotosAsync( this.tbUserName.Text, this.tbSavePath.Text );
                 this.tmrProgress.Stop();
                 MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
                 if ( this._twitterDownloader.ErrorsLinks.Count > 0 )
@@ -138,7 +138,7 @@ namespace TwitterPhotoDownloader
             this.btnStart.Enabled = !this.btnStart.Enabled;
         }
 
-        private async void btnStart_Click( object sender, EventArgs e )
+        private async void btnStart_ClickAsync( object sender, EventArgs e )
         {
             if ( string.IsNullOrEmpty( this.tbSavePath.Text ) || string.IsNullOrEmpty( this.tbUserName.Text ) )
             {
@@ -148,7 +148,7 @@ namespace TwitterPhotoDownloader
             this.tbUserName.Text = TwitterDownloader.FixUserName( this.tbUserName.Text );
             this.DisEnControls();
             this.tmrProgress.Start();
-            await this.Work();
+            await this.WorkAsync();
         }
 
         private void tmrProgress_Tick( object sender, EventArgs e )

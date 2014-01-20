@@ -72,7 +72,7 @@ namespace TwitterPhotoDownloader
             this._loading = false;
         }
 
-        private async Task WaitForLoading()
+        private async Task WaitForLoadingAsync()
         {
             while ( this._loading )
             {
@@ -85,7 +85,7 @@ namespace TwitterPhotoDownloader
         /// </summary>
         /// <param name="fileUrl">URL to file</param>
         /// <param name="savePath">Where to save</param>
-        private async Task DownloadFile( string fileUrl, string savePath )
+        private async Task DownloadFileAsync( string fileUrl, string savePath )
         {
             string fileName = savePath + "\\" + Path.GetFileName( fileUrl.Substring( 0, fileUrl.Length - 6 ) );
             try
@@ -107,14 +107,14 @@ namespace TwitterPhotoDownloader
         /// <param name="username">Twitter username</param>
         /// <returns></returns>
         [STAThread]
-        private async Task<List<string>> GetPhotos( string username )
+        private async Task<List<string>> GetPhotosAsync( string username )
         {
             // loading media page
             var photosUrls = new List<string>();
             this._loading = true;
             this._webBrowser.Navigate( "https://twitter.com/" + username + "/media" );
             this._loadingTimer.Start();
-            await this.WaitForLoading();
+            await this.WaitForLoadingAsync();
 
             if ( this._webBrowser.Document == null || this._webBrowser.Document.Body == null ||
                  this._webBrowser.Window == null )
@@ -133,7 +133,7 @@ namespace TwitterPhotoDownloader
                 this._webBrowser.Window.ScrollTo( 0, this._webBrowser.Document.Body.ScrollHeight );
                 this._loading = true;
                 this._loadingTimer.Start();
-                await this.WaitForLoading();
+                await this.WaitForLoadingAsync();
 
                 newHeight = this._webBrowser.Document.Body.ScrollHeight;
                 Application.DoEvents();
@@ -152,7 +152,7 @@ namespace TwitterPhotoDownloader
             return photosUrls;
         }
 
-        public async Task DownloadPhotos( string username, string savePath )
+        public async Task DownloadPhotosAsync( string username, string savePath )
         {
             if ( savePath[ savePath.Length - 1 ] == '\\' )
             {
@@ -160,7 +160,7 @@ namespace TwitterPhotoDownloader
             }
             this.Progress.CurrentProgress = 0;
             this.Progress.Type = ProgressType.GettingImages;
-            List<string> photosUrls = await this.GetPhotos( username );
+            List<string> photosUrls = await this.GetPhotosAsync( username );
             this.Progress.MaxProgress = photosUrls.Count;
             this.Progress.Type = ProgressType.DownloadingImages;
             if ( !Directory.Exists( savePath ) )
@@ -169,7 +169,7 @@ namespace TwitterPhotoDownloader
             }
             for ( int i = 0; i < photosUrls.Count; i++ )
             {
-                await this.DownloadFile( photosUrls[ i ], savePath );
+                await this.DownloadFileAsync( photosUrls[ i ], savePath );
                 this.Progress.CurrentProgress = i + 1;
                 await TaskEx.Delay( 1000 );
             }
