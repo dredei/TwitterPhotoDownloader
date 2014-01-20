@@ -72,11 +72,11 @@ namespace TwitterPhotoDownloader
             this._loading = false;
         }
 
-        private void WaitForLoading()
+        private async Task WaitForLoading()
         {
             while ( this._loading )
             {
-                Application.DoEvents();
+                await TaskEx.Delay( 500 );
             }
         }
 
@@ -107,14 +107,14 @@ namespace TwitterPhotoDownloader
         /// <param name="username">Twitter username</param>
         /// <returns></returns>
         [STAThread]
-        private List<string> GetPhotos( string username )
+        private async Task<List<string>> GetPhotos( string username )
         {
             // loading media page
             var photosUrls = new List<string>();
             this._loading = true;
             this._webBrowser.Navigate( "https://twitter.com/" + username + "/media" );
             this._loadingTimer.Start();
-            this.WaitForLoading();
+            await this.WaitForLoading();
 
             if ( this._webBrowser.Document == null || this._webBrowser.Document.Body == null ||
                  this._webBrowser.Window == null )
@@ -133,7 +133,7 @@ namespace TwitterPhotoDownloader
                 this._webBrowser.Window.ScrollTo( 0, this._webBrowser.Document.Body.ScrollHeight );
                 this._loading = true;
                 this._loadingTimer.Start();
-                this.WaitForLoading();
+                await this.WaitForLoading();
 
                 newHeight = this._webBrowser.Document.Body.ScrollHeight;
                 Application.DoEvents();
@@ -160,7 +160,7 @@ namespace TwitterPhotoDownloader
             }
             this.Progress.CurrentProgress = 0;
             this.Progress.Type = ProgressType.GettingImages;
-            List<string> photosUrls = this.GetPhotos( username );
+            List<string> photosUrls = await this.GetPhotos( username );
             this.Progress.MaxProgress = photosUrls.Count;
             this.Progress.Type = ProgressType.DownloadingImages;
             if ( !Directory.Exists( savePath ) )
