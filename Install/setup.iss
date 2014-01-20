@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "TwitterPhotoDownloader"
-#define MyAppVersion "1.0.3"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "dredei, http://www.softez.pp.ua/"
 #define MyAppURL "http://www.softez.pp.ua/"
 #define MyAppExeName "TwitterPhotoDownloader.exe"
@@ -42,6 +42,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
+Source: "..\xulrunner\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "Release\TwitterPhotoDownloader.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "Settings_RuLang.ini"; DestDir: "{app}"; DestName: "Settings.ini"; Flags: onlyifdoesntexist; Languages: russian
