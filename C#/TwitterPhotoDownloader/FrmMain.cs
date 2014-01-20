@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Windows7.DesktopIntegration.WindowsForms;
 using ExtensionMethods;
+using Gecko;
 using Ini;
 
 #endregion
@@ -18,13 +19,17 @@ namespace TwitterPhotoDownloader
     {
         private TwitterDownloader _twitterDownloader;
         private string _language = "en-GB";
-        private readonly Version _version = Version.Parse( "1.0.3" );
         private Thread _thread;
         private Thread _checkInternetThread;
         private readonly bool _possibleProgressInTaskBar;
+        private readonly Version _version = Version.Parse( "1.1.0" );
 
         public FrmMain()
         {
+            //Xpcom.Initialize( Application.StartupPath + @"\xulrunner\" );
+            //this._webBrowser = new GeckoWebBrowser { Height = 0, Width = 0, Left = -1, Top = -1 };
+            //this.Controls.Add( this._webBrowser );
+
             this.LoadSettings();
             Thread.CurrentThread.CurrentUICulture = new CultureInfo( this._language );
             this.InitializeComponent();
@@ -33,19 +38,9 @@ namespace TwitterPhotoDownloader
             {
                 this._possibleProgressInTaskBar = true;
             }
-            this.CheckIEVersion();
             this.tbSavePath.Text = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) +
                                    "\\TwitterPhotoDownloader";
-        }
-
-        private void CheckIEVersion()
-        {
-            if ( TwitterDownloader.GetIEVersion() < new Version( 8, 0 ) )
-            {
-                MessageBox.Show( strings.UpdateIe, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
-                Environment.Exit( 0 );
-            }
-            TwitterDownloader.SetIE8KeyforWebBrowserControl();
+            //this._twitterDownloader = new TwitterDownloader();
         }
 
         private void AutoPosLabels()
@@ -136,8 +131,8 @@ namespace TwitterPhotoDownloader
                     this.pb1.SetTaskbarProgress();
                 }
             } ) );
-            this._twitterDownloader.Dispose();
-            this._twitterDownloader = null;
+            //this._twitterDownloader.Dispose();
+            //this._twitterDownloader = null;
             GC.Collect();
         }
 
@@ -260,6 +255,7 @@ namespace TwitterPhotoDownloader
                 if ( TwitterDownloader.CheckForInternetConnection() )
                 {
                     this.btnStart.Enabled = true;
+                    this.tbUserName.Focus();
                 }
                 else
                 {

@@ -38,6 +38,12 @@
     <Reference Include="ExtensionMethods">
       <HintPath>..\packages\ExtensionMethods.dll</HintPath>
     </Reference>
+    <Reference Include="Geckofx-Core">
+      <HintPath>..\packages\Geckofx-Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Geckofx-Winforms">
+      <HintPath>..\packages\Geckofx-Winforms.dll</HintPath>
+    </Reference>
     <Reference Include="IniFile, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IniFile.dll</HintPath>

@@ -7,6 +7,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using Gecko;
 using Microsoft.Win32;
 using Timer = System.Windows.Forms.Timer;
 
@@ -39,7 +40,8 @@ namespace TwitterPhotoDownloader
         public ProgressC Progress;
         public List<string> ErrorsLinks;
 
-        private WebBrowser _webBrowser;
+        private GeckoWebBrowser _webBrowser;
+        private Form _justForm;
         private Timer _loadingTimer;
         private WebClient _webClient;
         private bool _loading;
@@ -47,13 +49,23 @@ namespace TwitterPhotoDownloader
 
         public TwitterDownloader()
         {
-            this._webBrowser = new WebBrowser();
+            Xpcom.Initialize( Application.StartupPath + @"\xulrunner\" );
+
+            this._webBrowser = new GeckoWebBrowser { Dock = DockStyle.Fill };
+            //this._webBrowser = browser;
             this._webClient = new WebClient();
             this.Progress = new ProgressC();
             this._loadingTimer = new Timer { Interval = 4000 };
             this._loadingTimer.Tick += this._loadingTimer_Tick;
             this._loading = false;
             this.ErrorsLinks = new List<string>();
+            #region Изврат
+
+            // иначе не работает скролл :(
+            this._justForm = new Form();
+            this._justForm.Controls.Add( this._webBrowser );
+
+            #endregion
         }
 
         private void _loadingTimer_Tick( object sender, EventArgs e )
@@ -61,28 +73,6 @@ namespace TwitterPhotoDownloader
             this._loadingTimer.Stop();
             this._loading = false;
         }
-
-        #region IE methods
-
-        private void DisableIEImages()
-        {
-            RegistryKey RegKey = Registry.CurrentUser.OpenSubKey( @"Software\Microsoft\Internet Explorer\Main", true );
-            if ( RegKey != null )
-            {
-                RegKey.SetValue( "Display Inline Images", "no" );
-            }
-        }
-
-        private void EnableIEImages()
-        {
-            RegistryKey RegKey = Registry.CurrentUser.OpenSubKey( @"Software\Microsoft\Internet Explorer\Main", true );
-            if ( RegKey != null )
-            {
-                RegKey.SetValue( "Display Inline Images", "yes" );
-            }
-        }
-
-        #endregion
 
         private void WaitForLoading()
         {
@@ -117,6 +107,7 @@ namespace TwitterPhotoDownloader
         /// </summary>
         /// <param name="username">Twitter username</param>
         /// <returns></returns>
+        [STAThread]
         private List<string> GetPhotos( string username )
         {
             // loading media page
@@ -127,7 +118,7 @@ namespace TwitterPhotoDownloader
             this.WaitForLoading();
 
             if ( this._webBrowser.Document == null || this._webBrowser.Document.Body == null ||
-                 this._webBrowser.Document.Window == null )
+                 this._webBrowser.Window == null )
             {
                 return photosUrls;
             }
@@ -139,21 +130,22 @@ namespace TwitterPhotoDownloader
             {
                 page++;
                 this.Progress.Page = page;
-                oldHeight = this._webBrowser.Document.Body.ScrollRectangle.Height;
-                this._webBrowser.Document.Window.ScrollTo( 0, this._webBrowser.Document.Body.ScrollRectangle.Height );
+                oldHeight = this._webBrowser.Document.Body.ScrollHeight;
+                this._webBrowser.Window.ScrollTo( 0, this._webBrowser.Document.Body.ScrollHeight );
                 this._loading = true;
                 this._loadingTimer.Start();
                 this.WaitForLoading();
-                newHeight = this._webBrowser.Document.Body.ScrollRectangle.Height;
+
+                newHeight = this._webBrowser.Document.Body.ScrollHeight;
                 Application.DoEvents();
             }
             while ( newHeight > oldHeight );
 
             var elements = this._webBrowser.Document.Body.GetElementsByTagName( "span" );
-            foreach ( HtmlElement element in elements )
+            foreach ( GeckoElement element in elements )
             {
                 string attributeValue = element.GetAttribute( "data-resolved-url-large" );
-                if ( attributeValue.IndexOf( ".jpg:large" ) >= 0 )
+                if ( attributeValue != null && attributeValue.IndexOf( ".jpg:large" ) >= 0 )
                 {
                     photosUrls.Add( attributeValue );
                 }
@@ -167,7 +159,6 @@ namespace TwitterPhotoDownloader
             {
                 savePath = savePath.Remove( savePath.Length - 1, 1 );
             }
-            this.DisableIEImages();
             this.Progress.CurrentProgress = 0;
             this.Progress.Type = ProgressType.GettingImages;
             List<string> photosUrls = this.GetPhotos( username );
@@ -177,7 +168,6 @@ namespace TwitterPhotoDownloader
             {
                 Directory.CreateDirectory( savePath );
             }
-            this.EnableIEImages();
             for ( int i = 0; i < photosUrls.Count; i++ )
             {
                 this.DownloadFile( photosUrls[ i ], savePath );
@@ -214,70 +204,6 @@ namespace TwitterPhotoDownloader
             }
         }
 
-        public static Version GetIEVersion()
-        {
-            const string key = @"Software\Microsoft\Internet Explorer";
-            RegistryKey dkey = Registry.LocalMachine.OpenSubKey( key, false );
-            if ( dkey != null )
-            {
-                string data = dkey.GetValue( "Version" ).ToString();
-                return Version.Parse( data );
-            }
-            return new Version();
-        }
-
-        public static void SetIE8KeyforWebBrowserControl()
-        {
-            RegistryKey Regkey = null;
-            try
-            {
-                //For 64 bit Machine 
-                if ( Environment.Is64BitOperatingSystem )
-                {
-                    Regkey =
-                        Registry.LocalMachine.OpenSubKey(
-                            @"SOFTWARE\\Wow6432Node\\Microsoft\\Internet Explorer\\MAIN\\FeatureControl\\FEATURE_BROWSER_EMULATION",
-                            true );
-                }
-                else //For 32 bit Machine 
-                {
-                    Regkey =
-                        Registry.LocalMachine.OpenSubKey(
-                            @"SOFTWARE\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION",
-                            true );
-                }
-                //If the path is not correct or 
-                //If user't have priviledges to access registry 
-                if ( Regkey == null )
-                {
-                    return;
-                }
-                string FindAppkey = Convert.ToString( Regkey.GetValue( "TwitterPhotoDownloader.exe" ) );
-                //Check if key is already present 
-                if ( FindAppkey == "8000" )
-                {
-                    Regkey.Close();
-                    return;
-                }
-                //If key is not present add the key , Kev value 8000-Decimal 
-                if ( string.IsNullOrEmpty( FindAppkey ) )
-                {
-                    Regkey.SetValue( "TwitterPhotoDownloader.exe", unchecked( 0x1F40 ), RegistryValueKind.DWord );
-                }
-            }
-            catch ( Exception ex )
-            {
-                Console.WriteLine( ex.Message );
-            }
-            finally
-            {
-                if ( Regkey != null )
-                {
-                    Regkey.Close();
-                }
-            }
-        }
-
         #endregion
 
         #region Members
@@ -294,10 +220,10 @@ namespace TwitterPhotoDownloader
             {
                 if ( disposing )
                 {
-                    if ( this._webBrowser != null )
-                    {
-                        this._webBrowser.Dispose();
-                    }
+                    //if ( this._webBrowser != null )
+                    //{
+                    //    this._webBrowser.Dispose();
+                    //}
                     if ( this._webClient != null )
                     {
                         this._webClient.Dispose();
@@ -306,13 +232,18 @@ namespace TwitterPhotoDownloader
                     {
                         this._loadingTimer.Dispose();
                     }
+                    if ( this._justForm != null )
+                    {
+                        this._justForm.Dispose();
+                    }
                 }
 
                 // Indicate that the instance has been disposed.
-                this._webBrowser = null;
+                //this._webBrowser = null;
                 this._webClient = null;
                 this._loadingTimer = null;
                 this.Progress = null;
+                this._justForm = null;
                 this._disposed = true;
                 this.ErrorsLinks.Clear();
                 this.ErrorsLinks = null;
