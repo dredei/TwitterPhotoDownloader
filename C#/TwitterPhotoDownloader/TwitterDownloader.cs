@@ -90,8 +90,8 @@ namespace TwitterPhotoDownloader
             string fileName = savePath + "\\" + Path.GetFileName( fileUrl.Substring( 0, fileUrl.Length - 6 ) );
             try
             {
-                //this._webClient.DownloadFileAsync( fileUrl, fileName );
-                await this._webClient.DownloadFileTaskAsync( new Uri( fileUrl ), fileName );
+                Task task = TaskEx.Run( () => this._webClient.DownloadFileAsync( new Uri( fileUrl ), fileName ) );
+                await task;
             }
             catch
             {
@@ -171,7 +171,7 @@ namespace TwitterPhotoDownloader
             {
                 await this.DownloadFile( photosUrls[ i ], savePath );
                 this.Progress.CurrentProgress = i + 1;
-                await Task.Delay( 1000 );
+                await TaskEx.Delay( 1000 );
             }
             photosUrls.Clear();
         }
