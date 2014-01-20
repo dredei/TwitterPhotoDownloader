@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gecko;
+using Timer = System.Windows.Forms.Timer;
 
 #endregion
 
@@ -105,9 +107,10 @@ namespace TwitterPhotoDownloader
         /// Get photos from account
         /// </summary>
         /// <param name="username">Twitter username</param>
+        /// <param name="cancellToken">Cancel token</param>
         /// <returns></returns>
         [STAThread]
-        private async Task<List<string>> GetPhotosAsync( string username )
+        private async Task<List<string>> GetPhotosAsync( string username, CancellationToken cancellToken )
         {
             // loading media page
             var photosUrls = new List<string>();
@@ -137,6 +140,10 @@ namespace TwitterPhotoDownloader
 
                 newHeight = this._webBrowser.Document.Body.ScrollHeight;
                 Application.DoEvents();
+                if ( cancellToken.IsCancellationRequested )
+                {
+                    cancellToken.ThrowIfCancellationRequested();
+                }
             }
             while ( newHeight > oldHeight );
 
@@ -152,7 +159,7 @@ namespace TwitterPhotoDownloader
             return photosUrls;
         }
 
-        public async Task DownloadPhotosAsync( string username, string savePath )
+        public async Task DownloadPhotosAsync( string username, string savePath, CancellationToken cancellToken )
         {
             if ( savePath[ savePath.Length - 1 ] == '\\' )
             {
@@ -160,7 +167,7 @@ namespace TwitterPhotoDownloader
             }
             this.Progress.CurrentProgress = 0;
             this.Progress.Type = ProgressType.GettingImages;
-            List<string> photosUrls = await this.GetPhotosAsync( username );
+            List<string> photosUrls = await this.GetPhotosAsync( username, cancellToken );
             this.Progress.MaxProgress = photosUrls.Count;
             this.Progress.Type = ProgressType.DownloadingImages;
             if ( !Directory.Exists( savePath ) )
@@ -169,6 +176,10 @@ namespace TwitterPhotoDownloader
             }
             for ( int i = 0; i < photosUrls.Count; i++ )
             {
+                if ( cancellToken.IsCancellationRequested )
+                {
+                    cancellToken.ThrowIfCancellationRequested();
+                }
                 await this.DownloadFileAsync( photosUrls[ i ], savePath );
                 this.Progress.CurrentProgress = i + 1;
                 await TaskEx.Delay( 1000 );

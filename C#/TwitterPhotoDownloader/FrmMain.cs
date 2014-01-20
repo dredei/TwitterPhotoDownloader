@@ -22,6 +22,7 @@ namespace TwitterPhotoDownloader
         private Thread _checkInternetThread;
         private readonly bool _possibleProgressInTaskBar;
         private readonly Version _version = Version.Parse( "1.1.0" );
+        private CancellationTokenSource _cancellationTokenSource;
 
         public FrmMain()
         {
@@ -86,8 +87,9 @@ namespace TwitterPhotoDownloader
             Thread.CurrentThread.CurrentUICulture = new CultureInfo( this._language );
             try
             {
+                this._cancellationTokenSource = new CancellationTokenSource();
                 this._twitterDownloader = new TwitterDownloader();
-                await this._twitterDownloader.DownloadPhotosAsync( this.tbUserName.Text, this.tbSavePath.Text );
+                await this._twitterDownloader.DownloadPhotosAsync( this.tbUserName.Text, this.tbSavePath.Text, this._cancellationTokenSource.Token );
                 this.tmrProgress.Stop();
                 MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
                 if ( this._twitterDownloader.ErrorsLinks.Count > 0 )
@@ -107,7 +109,7 @@ namespace TwitterPhotoDownloader
             }
             catch ( Exception exception )
             {
-                if ( exception is ThreadAbortException )
+                if ( exception is OperationCanceledException )
                 {
                     return;
                 }
@@ -189,6 +191,10 @@ namespace TwitterPhotoDownloader
         private void FrmMain_FormClosing( object sender, FormClosingEventArgs e )
         {
             this.SaveSettings();
+            if ( this._cancellationTokenSource != null )
+            {
+                this._cancellationTokenSource.Cancel();
+            }
             if ( this._checkInternetThread != null )
             {
                 this._checkInternetThread.Abort();
