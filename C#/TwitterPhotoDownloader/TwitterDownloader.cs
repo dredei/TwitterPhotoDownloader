@@ -182,7 +182,7 @@ namespace TwitterPhotoDownloader
                 }
                 await this.DownloadFileAsync( photosUrls[ i ], savePath );
                 this.Progress.CurrentProgress = i + 1;
-                await TaskEx.Delay( 1000 );
+                await TaskEx.Delay( 1000, cancellToken );
             }
             photosUrls.Clear();
         }
