@@ -54,7 +54,7 @@ namespace TwitterPhotoDownloader
             this._webBrowser = new GeckoWebBrowser { Dock = DockStyle.Fill };
             this._webClient = new WebClient();
             this.Progress = new ProgressC();
-            this._loadingTimer = new Timer { Interval = 5500 };
+            this._loadingTimer = new Timer { Interval = 6500 };
             this._loadingTimer.Tick += this._loadingTimer_Tick;
             this._loading = false;
             this.ErrorsLinks = new List<string>();
@@ -182,7 +182,7 @@ namespace TwitterPhotoDownloader
                 }
                 await this.DownloadFileAsync( photosUrls[ i ], savePath );
                 this.Progress.CurrentProgress = i + 1;
-                await TaskEx.Delay( 2000, cancellToken );
+                await TaskEx.Delay( 2500, cancellToken );
             }
             photosUrls.Clear();
         }

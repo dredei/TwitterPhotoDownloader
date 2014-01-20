@@ -3,7 +3,7 @@ TwitterPhotoDownloader
 
 ### English
 
-Download **all** photo of a user from media page.
+Download almost **all** photo of a user from media page (all depends on the twitter).
 
 Using **Gecko** .
 
@@ -11,7 +11,7 @@ Requires **.NET Framework 4** or higher.
 
 ### Russian
 
-Скачивает **все** фото пользователя с медиа страницы.
+Скачивает практически **все** фото пользователя с медиа страницы (все зависит от самого твиттера).
 
 Используется **Gecko** .
 
