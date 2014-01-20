@@ -25,8 +25,9 @@ AllowNoIcons=yes
 LicenseFile=license.txt
 OutputDir=bin
 OutputBaseFilename=twitter_photo_downloader_setup
-Compression=lzma
+Compression=lzma2/ultra64
 SolidCompression=yes
+InternalCompressLevel=ultra
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -42,7 +43,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "..\xulrunner\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\xulrunner\*"; DestDir: "{app}\xulrunner"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "Release\TwitterPhotoDownloader.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "Settings_RuLang.ini"; DestDir: "{app}"; DestName: "Settings.ini"; Flags: onlyifdoesntexist; Languages: russian
