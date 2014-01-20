@@ -5,7 +5,7 @@ TwitterPhotoDownloader
 
 Download **all** photo of a user from media page.
 
-Using Internet Explorer. **Min version of IE: 8** .
+Using **Gecko** .
 
 Requires **.NET Framework 4** or higher.
 
@@ -13,6 +13,6 @@ Requires **.NET Framework 4** or higher.
 
 Скачивает **все** фото пользователя с медиа страницы.
 
-Используется Internet Explorer. **Минимальная версия IE: 8** .
+Используется **Gecko** .
 
 Для работы требуется **.NET Framework 4** или выше.
