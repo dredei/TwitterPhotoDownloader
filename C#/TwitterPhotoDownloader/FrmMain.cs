@@ -5,10 +5,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows7.DesktopIntegration.WindowsForms;
 using ExtensionMethods;
-using Gecko;
 using Ini;
 
 #endregion
@@ -26,10 +26,6 @@ namespace TwitterPhotoDownloader
 
         public FrmMain()
         {
-            //Xpcom.Initialize( Application.StartupPath + @"\xulrunner\" );
-            //this._webBrowser = new GeckoWebBrowser { Height = 0, Width = 0, Left = -1, Top = -1 };
-            //this.Controls.Add( this._webBrowser );
-
             this.LoadSettings();
             Thread.CurrentThread.CurrentUICulture = new CultureInfo( this._language );
             this.InitializeComponent();
@@ -40,7 +36,6 @@ namespace TwitterPhotoDownloader
             }
             this.tbSavePath.Text = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) +
                                    "\\TwitterPhotoDownloader";
-            //this._twitterDownloader = new TwitterDownloader();
         }
 
         private void AutoPosLabels()
@@ -86,14 +81,14 @@ namespace TwitterPhotoDownloader
             }
         }
 
-        private void Work()
+        private async Task Work()
         {
             this.LoadSettings();
             Thread.CurrentThread.CurrentUICulture = new CultureInfo( this._language );
             try
             {
                 this._twitterDownloader = new TwitterDownloader();
-                this._twitterDownloader.DownloadPhotos( this.tbUserName.Text, this.tbSavePath.Text );
+                bool res = await this._twitterDownloader.DownloadPhotos( this.tbUserName.Text, this.tbSavePath.Text );
                 this.tmrProgress.Stop();
                 MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
                 if ( this._twitterDownloader.ErrorsLinks.Count > 0 )
@@ -131,8 +126,8 @@ namespace TwitterPhotoDownloader
                     this.pb1.SetTaskbarProgress();
                 }
             } ) );
-            //this._twitterDownloader.Dispose();
-            //this._twitterDownloader = null;
+            this._twitterDownloader.Dispose();
+            this._twitterDownloader = null;
             GC.Collect();
         }
 
@@ -144,7 +139,7 @@ namespace TwitterPhotoDownloader
             this.btnStart.Enabled = !this.btnStart.Enabled;
         }
 
-        private void btnStart_Click( object sender, EventArgs e )
+        private async void btnStart_Click( object sender, EventArgs e )
         {
             if ( string.IsNullOrEmpty( this.tbSavePath.Text ) || string.IsNullOrEmpty( this.tbUserName.Text ) )
             {
@@ -153,10 +148,8 @@ namespace TwitterPhotoDownloader
             }
             this.tbUserName.Text = TwitterDownloader.FixUserName( this.tbUserName.Text );
             this.DisEnControls();
-            this._thread = new Thread( this.Work );
-            this._thread.SetApartmentState( ApartmentState.STA );
-            this._thread.Start();
             this.tmrProgress.Start();
+            await this.Work();
         }
 
         private void tmrProgress_Tick( object sender, EventArgs e )

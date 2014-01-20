@@ -5,11 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gecko;
-using Microsoft.Win32;
-using Timer = System.Windows.Forms.Timer;
 
 #endregion
 
@@ -52,13 +50,13 @@ namespace TwitterPhotoDownloader
             Xpcom.Initialize( Application.StartupPath + @"\xulrunner\" );
 
             this._webBrowser = new GeckoWebBrowser { Dock = DockStyle.Fill };
-            //this._webBrowser = browser;
             this._webClient = new WebClient();
             this.Progress = new ProgressC();
             this._loadingTimer = new Timer { Interval = 4000 };
             this._loadingTimer.Tick += this._loadingTimer_Tick;
             this._loading = false;
             this.ErrorsLinks = new List<string>();
+
             #region Изврат
 
             // иначе не работает скролл :(
@@ -87,12 +85,13 @@ namespace TwitterPhotoDownloader
         /// </summary>
         /// <param name="fileUrl">URL to file</param>
         /// <param name="savePath">Where to save</param>
-        private void DownloadFile( string fileUrl, string savePath )
+        private async Task DownloadFile( string fileUrl, string savePath )
         {
             string fileName = savePath + "\\" + Path.GetFileName( fileUrl.Substring( 0, fileUrl.Length - 6 ) );
             try
             {
-                this._webClient.DownloadFile( fileUrl, fileName );
+                //this._webClient.DownloadFileAsync( fileUrl, fileName );
+                await this._webClient.DownloadFileTaskAsync( new Uri( fileUrl ), fileName );
             }
             catch
             {
@@ -153,7 +152,7 @@ namespace TwitterPhotoDownloader
             return photosUrls;
         }
 
-        public void DownloadPhotos( string username, string savePath )
+        public async Task<bool> DownloadPhotos( string username, string savePath )
         {
             if ( savePath[ savePath.Length - 1 ] == '\\' )
             {
@@ -170,11 +169,12 @@ namespace TwitterPhotoDownloader
             }
             for ( int i = 0; i < photosUrls.Count; i++ )
             {
-                this.DownloadFile( photosUrls[ i ], savePath );
+                await this.DownloadFile( photosUrls[ i ], savePath );
                 this.Progress.CurrentProgress = i + 1;
-                Thread.Sleep( 700 );
+                await Task.Delay( 1000 );
             }
             photosUrls.Clear();
+            return true;
         }
 
         #region Static methods
@@ -220,10 +220,10 @@ namespace TwitterPhotoDownloader
             {
                 if ( disposing )
                 {
-                    //if ( this._webBrowser != null )
-                    //{
-                    //    this._webBrowser.Dispose();
-                    //}
+                    if ( this._webBrowser != null )
+                    {
+                        this._webBrowser.Dispose();
+                    }
                     if ( this._webClient != null )
                     {
                         this._webClient.Dispose();
@@ -239,7 +239,7 @@ namespace TwitterPhotoDownloader
                 }
 
                 // Indicate that the instance has been disposed.
-                //this._webBrowser = null;
+                this._webBrowser = null;
                 this._webClient = null;
                 this._loadingTimer = null;
                 this.Progress = null;
