@@ -123,6 +123,7 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy /y "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)\..\Install\Release\"
 xcopy /y "$(ProjectDir)$(OutDir)*.dll" "$(SolutionDir)\..\Install\Release\"
+xcopy /y "$(ProjectDir)$(OutDir)*.xml" "$(SolutionDir)\..\Install\Release\"
 xcopy /y "$(ProjectDir)$(OutDir)en\*.dll" "$(SolutionDir)\..\Install\Release\en\"
 "$(SolutionDir)\..\ChangeRevisionNumber.exe" "$(ProjectDir)\Properties\AssemblyInfo.cs"
 xcopy /y "$(ProjectDir)$(OutDir)en-GB\*.dll" "$(SolutionDir)\..\Install\Release\en-GB\"</PostBuildEvent>
