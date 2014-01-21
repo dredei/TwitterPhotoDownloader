@@ -49,7 +49,14 @@ namespace TwitterPhotoDownloader
 
         public TwitterDownloader()
         {
-            Xpcom.Initialize( Application.StartupPath + @"\xulrunner\" );
+            try
+            {
+                Xpcom.Initialize( Application.StartupPath + @"\xulrunner\" );
+            }
+            catch ( Exception exception )
+            {
+                throw new Exception( exception.Message );
+            }
 
             this._webBrowser = new GeckoWebBrowser { Dock = DockStyle.Fill };
             this._webClient = new WebClient();

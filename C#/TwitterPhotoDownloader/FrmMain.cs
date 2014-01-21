@@ -127,8 +127,11 @@ namespace TwitterPhotoDownloader
                     this.pb1.SetTaskbarProgress();
                 }
             } ) );
-            this._twitterDownloader.Dispose();
-            this._twitterDownloader = null;
+            if ( this._twitterDownloader != null )
+            {
+                this._twitterDownloader.Dispose();
+                this._twitterDownloader = null;
+            }
             GC.Collect();
         }
 
