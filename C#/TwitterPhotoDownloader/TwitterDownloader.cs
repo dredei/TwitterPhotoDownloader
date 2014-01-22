@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -166,6 +167,7 @@ namespace TwitterPhotoDownloader
             return photosUrls;
         }
 
+        [STAThread]
         public async Task DownloadPhotosAsync( string username, string savePath, CancellationToken cancellToken )
         {
             if ( savePath[ savePath.Length - 1 ] == '\\' )
@@ -192,6 +194,8 @@ namespace TwitterPhotoDownloader
                 await TaskEx.Delay( 2500, cancellToken );
             }
             photosUrls.Clear();
+            Xpcom.Shutdown();
+            await this._webBrowser.ClearCache();
         }
 
         #region Static methods
@@ -268,5 +272,28 @@ namespace TwitterPhotoDownloader
         }
 
         #endregion
+    }
+
+    public static class GeckoExtensions
+    {
+        public static async Task ClearCache( this GeckoWebBrowser webBrowser )
+        {
+            await TaskEx.Run( () =>
+            {
+                string profileDir = Xpcom.ProfileDirectory;
+                List<string> dirs = Directory.GetDirectories( profileDir ).ToList();
+                for ( int i = 0; i < dirs.Count; i++ )
+                {
+                    string dir = dirs[ i ] + "\\";
+                    dirs[ i ] = Path.GetFileName( Path.GetDirectoryName( dir ) );
+                }
+                Regex regex = new Regex( "^Cache(\\.Trash[0-9]+)?$" );
+                string[] dirsForRemove = dirs.Where( d => regex.Match( d ).Success ).ToArray();
+                foreach ( string dir in dirsForRemove )
+                {
+                    Directory.Delete( profileDir + "\\" + dir, true );
+                }
+            } );
+        }
     }
 }

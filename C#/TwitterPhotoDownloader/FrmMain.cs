@@ -89,7 +89,9 @@ namespace TwitterPhotoDownloader
             {
                 this._cancellationTokenSource = new CancellationTokenSource();
                 this._twitterDownloader = new TwitterDownloader();
-                await this._twitterDownloader.DownloadPhotosAsync( this.tbUserName.Text, this.tbSavePath.Text, this._cancellationTokenSource.Token );
+                await
+                    this._twitterDownloader.DownloadPhotosAsync( this.tbUserName.Text, this.tbSavePath.Text,
+                        this._cancellationTokenSource.Token );
                 this.tmrProgress.Stop();
                 MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
                 if ( this._twitterDownloader.ErrorsLinks.Count > 0 )
