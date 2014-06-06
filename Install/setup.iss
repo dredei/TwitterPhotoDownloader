@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "TwitterPhotoDownloader"
-#define MyAppVersion "1.1.0"
+#define MyAppVersion "1.1.1"
 #define MyAppPublisher "dredei, http://www.softez.pp.ua/"
 #define MyAppURL "http://www.softez.pp.ua/"
 #define MyAppExeName "TwitterPhotoDownloader.exe"
