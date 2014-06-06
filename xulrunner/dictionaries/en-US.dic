@@ -1,4 +1,4 @@
-57445
+57456
 0/nm
 0th/pt
 1/n1
@@ -3828,11 +3828,13 @@ DOS/M
 DOT
 DP/SM
 DPT
+DRM
 DST
 DTP
 DUI
 DVD
 DVDs
+DVR/S
 DWI
 Dacca/M
 Dacey/M
@@ -17679,7 +17681,7 @@ androgenic
 androgynous
 androgyny/M
 android/SM
-anecdotal
+anecdotal/Y
 anecdote/MS
 anechoic
 anemia/M
@@ -18771,6 +18773,7 @@ autobiographic
 autobiographical/Y
 autobiography/SM
 autoclave/MS
+autocomplete/S
 autocracy/SM
 autocrat/SM
 autocratic
@@ -25106,6 +25109,7 @@ cue/DSMG
 cuff/MDGS
 cufflink/SM
 cuisine/SM
+cul-de-sac
 culinary
 cull/MDGS
 cullender/MS
@@ -26011,6 +26015,7 @@ deputation/SM
 depute/DSG
 deputize/DSG
 deputy/SM
+dequeue/DSG
 derailleur/MS
 derailment/MS
 derangement/M
@@ -28281,6 +28286,7 @@ enormous/YP
 enormousness/M
 enough/M
 enplane/DSG
+enqueue/DSG
 enquirer/S
 enquiringly
 enrage/GDS
@@ -35366,6 +35372,7 @@ interrogatory/SM
 interrupt/ZGMDRS
 interrupter/M
 interruptibility
+interruptible/U
 interruption/MS
 interscholastic
 intersect/GDS
@@ -38833,6 +38840,7 @@ migraine/MS
 migrant/MS
 migrate/AGDS
 migration/SM
+migrator/SM
 migratory
 mikado/MS
 mike/MGDS
@@ -38876,6 +38884,7 @@ milky/RTP
 mill/MDRSZGJ
 millage/M
 millenarian
+millennia
 millennial
 millennium/SM
 millepede/MS
@@ -44940,6 +44949,7 @@ professorship/MS
 proffer/GMDS
 proficiency/SM
 proficient/MYS
+profiler/SM
 profit/BGD
 profitability/M
 profitable/U
@@ -44970,6 +44980,7 @@ program/ZGMDRS
 programer/M
 programmable/SM
 programmatic
+programmatically
 programmed/CA
 programmer/MS
 programming/MS
@@ -46281,6 +46292,7 @@ recur/S
 recurred
 recurrence/SM
 recurring
+recurse/DGSV
 recursion/S
 recuse/DGS
 recyclable/MS
@@ -46801,7 +46813,6 @@ resistivity
 resistless
 resistor/MS
 resitting
-resizing
 resold
 resole/DSG
 resolute/XPYTNR
@@ -49486,7 +49497,7 @@ sixths
 sixtieth/M
 sixtieths
 sixty/SMH
-size/MGBDRS
+size/AMGBDRS
 sizing/M
 sizzle/DRSMZG
 ska/M
@@ -53634,7 +53645,7 @@ too
 took/A
 tool's
 tool/ADGS
-toolbar
+toolbar/MS
 toolbox/MS
 toolkit
 toolmaker/MS
