@@ -155,13 +155,21 @@ namespace TwitterPhotoDownloader
             }
             while ( newHeight > oldHeight );
 
-            var elements = this._webBrowser.Document.Body.GetElementsByTagName( "span" );
+            var elements =
+                this._webBrowser.Document.Body.GetElementsByTagName( "img" )
+                    .Where(
+                        e =>
+                            e.GetAttribute( "class" ) == "TwitterPhoto-mediaSource" &&
+                            e.GetAttribute( "src" ).Contains( ":large" ) );
             foreach ( GeckoElement element in elements )
             {
-                string attributeValue = element.GetAttribute( "data-resolved-url-large" );
-                if ( attributeValue != null && attributeValue.IndexOf( ".jpg:large" ) >= 0 )
+                try
                 {
-                    photosUrls.Add( attributeValue );
+                    photosUrls.Add( element.GetAttribute( "src" ) );
+                }
+                catch
+                {
+                    continue;
                 }
             }
             return photosUrls;
