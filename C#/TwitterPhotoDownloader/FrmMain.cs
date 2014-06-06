@@ -21,7 +21,7 @@ namespace TwitterPhotoDownloader
         private string _language = "en-GB";
         private Thread _checkInternetThread;
         private readonly bool _possibleProgressInTaskBar;
-        private readonly Version _version = Version.Parse( "1.1.0" );
+        private readonly Version _version = Version.Parse( "1.1.1" );
         private CancellationTokenSource _cancellationTokenSource;
 
         public FrmMain()
@@ -117,7 +117,7 @@ namespace TwitterPhotoDownloader
                 }
                 MessageBox.Show( exception.Message, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
-            this.Invoke( new MethodInvoker( delegate()
+            this.Invoke( new MethodInvoker( delegate
             {
                 this.tmrProgress.Stop();
                 this.lblInfo.Text = strings.Points;
@@ -129,11 +129,7 @@ namespace TwitterPhotoDownloader
                     this.pb1.SetTaskbarProgress();
                 }
             } ) );
-            if ( this._twitterDownloader != null )
-            {
-                this._twitterDownloader.Dispose();
-                this._twitterDownloader = null;
-            }
+            this._twitterDownloader = null;
             GC.Collect();
         }
 

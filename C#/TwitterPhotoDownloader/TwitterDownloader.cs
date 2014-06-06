@@ -132,25 +132,32 @@ namespace TwitterPhotoDownloader
             {
                 return photosUrls;
             }
-            int oldHeight;
-            int newHeight;
+            int oldHeight = 0;
+            int newHeight = 0;
             int page = 0;
             // scrolling down the page until all photos won't be loaded (oldHeight == newHeight)
             do
             {
-                page++;
-                this.Progress.Page = page;
-                oldHeight = this._webBrowser.Document.Body.ScrollHeight;
-                this._webBrowser.Window.ScrollTo( 0, this._webBrowser.Document.Body.ScrollHeight );
-                this._loading = true;
-                this._loadingTimer.Start();
-                await this.WaitForLoadingAsync();
-
-                newHeight = this._webBrowser.Document.Body.ScrollHeight;
-                Application.DoEvents();
-                if ( cancellToken.IsCancellationRequested )
+                try
                 {
-                    cancellToken.ThrowIfCancellationRequested();
+                    page++;
+                    this.Progress.Page = page;
+                    oldHeight = this._webBrowser.Document.Body.ScrollHeight;
+                    this._webBrowser.Window.ScrollTo( 0, this._webBrowser.Document.Body.ScrollHeight );
+                    this._loading = true;
+                    this._loadingTimer.Start();
+                    await this.WaitForLoadingAsync();
+
+                    newHeight = this._webBrowser.Document.Body.ScrollHeight;
+                    Application.DoEvents();
+                    if ( cancellToken.IsCancellationRequested )
+                    {
+                        cancellToken.ThrowIfCancellationRequested();
+                    }
+                }
+                catch
+                {
+                    continue;
                 }
             }
             while ( newHeight > oldHeight );
