@@ -95,9 +95,11 @@ namespace TwitterPhotoDownloader
         /// </summary>
         /// <param name="fileUrl">URL to file</param>
         /// <param name="savePath">Where to save</param>
-        private async Task DownloadFileAsync( string fileUrl, string savePath )
+        /// <param name="index"></param>
+        private async Task DownloadFileAsync( string fileUrl, string savePath, int index )
         {
-            string fileName = savePath + "\\" + Path.GetFileName( fileUrl.Substring( 0, fileUrl.Length - 6 ) );
+            fileUrl = fileUrl.Substring( 0, fileUrl.Length - 6 );
+            string fileName = savePath + "\\" + index + Path.GetExtension( fileUrl );
             try
             {
                 Task task = TaskEx.Run( () => this._webClient.DownloadFileAsync( new Uri( fileUrl ), fileName ) );
@@ -189,7 +191,9 @@ namespace TwitterPhotoDownloader
             {
                 savePath = savePath.Remove( savePath.Length - 1, 1 );
             }
+            this.Progress.Downloaded = 0;
             this.Progress.CurrentProgress = 0;
+            this.Progress.MaxProgress = 0;
             this.Progress.Type = ProgressType.GettingImages;
             List<string> photosUrls = await this.GetPhotosAsync( username, cancellToken );
             this.Progress.MaxProgress = photosUrls.Count;
@@ -204,11 +208,15 @@ namespace TwitterPhotoDownloader
                 {
                     cancellToken.ThrowIfCancellationRequested();
                 }
-                await this.DownloadFileAsync( photosUrls[ i ], savePath );
+                await this.DownloadFileAsync( photosUrls[ i ], savePath, i + 1 );
                 this.Progress.CurrentProgress = i + 1;
                 await TaskEx.Delay( 2500, cancellToken );
             }
             photosUrls.Clear();
+        }
+
+        public async Task Exit()
+        {
             Xpcom.Shutdown();
             await this._webBrowser.ClearCache();
         }

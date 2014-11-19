@@ -17,11 +17,11 @@ namespace TwitterPhotoDownloader
 {
     public partial class FrmMain : Form
     {
-        private TwitterDownloader _twitterDownloader;
+        private readonly TwitterDownloader _twitterDownloader;
         private string _language = "en-GB";
         private Thread _checkInternetThread;
         private readonly bool _possibleProgressInTaskBar;
-        private readonly Version _version = Version.Parse( "1.1.1" );
+        private readonly Version _version = Version.Parse( "1.1.2" );
         private CancellationTokenSource _cancellationTokenSource;
 
         public FrmMain()
@@ -36,6 +36,7 @@ namespace TwitterPhotoDownloader
             }
             this.tbSavePath.Text = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) +
                                    "\\TwitterPhotoDownloader";
+            this._twitterDownloader = new TwitterDownloader();
         }
 
         private void AutoPosLabels()
@@ -88,7 +89,6 @@ namespace TwitterPhotoDownloader
             try
             {
                 this._cancellationTokenSource = new CancellationTokenSource();
-                this._twitterDownloader = new TwitterDownloader();
                 await
                     this._twitterDownloader.DownloadPhotosAsync( this.tbUserName.Text, this.tbSavePath.Text,
                         this._cancellationTokenSource.Token );
@@ -129,7 +129,6 @@ namespace TwitterPhotoDownloader
                     this.pb1.SetTaskbarProgress();
                 }
             } ) );
-            this._twitterDownloader = null;
             GC.Collect();
         }
 
@@ -189,7 +188,7 @@ namespace TwitterPhotoDownloader
             Process.Start( "http://www.softez.pp.ua/" );
         }
 
-        private void FrmMain_FormClosing( object sender, FormClosingEventArgs e )
+        private async void FrmMain_FormClosing( object sender, FormClosingEventArgs e )
         {
             this.SaveSettings();
             if ( this._cancellationTokenSource != null )
@@ -199,6 +198,14 @@ namespace TwitterPhotoDownloader
             if ( this._checkInternetThread != null )
             {
                 this._checkInternetThread.Abort();
+            }
+            try
+            {
+                await this._twitterDownloader.Exit();
+            }
+            catch
+            {
+                return;
             }
         }
 
