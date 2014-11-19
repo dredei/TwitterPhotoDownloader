@@ -164,6 +164,22 @@ namespace TwitterPhotoDownloader
             }
             while ( newHeight > oldHeight );
 
+            // get and click on display content button
+            var displayContentElements =
+                this._webBrowser.Document.Body.GetElementsByTagName( "button" )
+                    .Where(
+                        el =>
+                            el.GetAttribute( "class" ) != null &&
+                            el.GetAttribute( "class" ).Contains( "display-this-media" ) );
+            foreach ( GeckoElement displayContentElement in displayContentElements )
+            {
+                var el = displayContentElement as GeckoHtmlElement;
+                if ( el != null )
+                {
+                    el.Click();
+                }
+            }
+
             var elements =
                 this._webBrowser.Document.Body.GetElementsByTagName( "img" )
                     .Where(
