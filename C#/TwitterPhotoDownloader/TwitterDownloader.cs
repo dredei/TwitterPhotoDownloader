@@ -72,6 +72,7 @@ namespace TwitterPhotoDownloader
             // иначе не работает скролл :(
             this._justForm = new Form();
             this._justForm.Controls.Add( this._webBrowser );
+            this._justForm.Show();
 
             #endregion
         }
@@ -234,7 +235,6 @@ namespace TwitterPhotoDownloader
         public async Task Exit()
         {
             Xpcom.Shutdown();
-            await this._webBrowser.ClearCache();
         }
 
         #region Static methods
