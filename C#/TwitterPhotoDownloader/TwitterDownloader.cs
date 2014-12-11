@@ -72,7 +72,6 @@ namespace TwitterPhotoDownloader
             // иначе не работает скролл :(
             this._justForm = new Form();
             this._justForm.Controls.Add( this._webBrowser );
-            this._justForm.Show();
 
             #endregion
         }
