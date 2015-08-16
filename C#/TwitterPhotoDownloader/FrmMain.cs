@@ -21,7 +21,7 @@ namespace TwitterPhotoDownloader
         private string _language = "en-GB";
         private Thread _checkInternetThread;
         private readonly bool _possibleProgressInTaskBar;
-        private readonly Version _version = Version.Parse( "1.1.2" );
+        private readonly Version _version = Version.Parse( "1.1.3" );
         private CancellationTokenSource _cancellationTokenSource;
 
         public FrmMain()
