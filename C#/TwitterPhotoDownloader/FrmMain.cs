@@ -191,22 +191,8 @@ namespace TwitterPhotoDownloader
         private async void FrmMain_FormClosing( object sender, FormClosingEventArgs e )
         {
             this.SaveSettings();
-            if ( this._cancellationTokenSource != null )
-            {
-                this._cancellationTokenSource.Cancel();
-            }
-            if ( this._checkInternetThread != null )
-            {
-                this._checkInternetThread.Abort();
-            }
-            try
-            {
-                await this._twitterDownloader.Exit();
-            }
-            catch
-            {
-                return;
-            }
+            this._cancellationTokenSource?.Cancel();
+            this._checkInternetThread?.Abort();
         }
 
         private void tsmiEng_Click( object sender, EventArgs e )

@@ -36,17 +36,16 @@ namespace TwitterPhotoDownloader
 
     #endregion
 
-    public sealed class TwitterDownloader : IDisposable
+    public sealed class TwitterDownloader
     {
-        public ProgressC Progress;
-        public List<string> ErrorsLinks;
+        public readonly ProgressC Progress;
+        public readonly List<string> ErrorsLinks;
 
-        private GeckoWebBrowser _webBrowser;
-        private Form _justForm;
-        private Timer _loadingTimer;
-        private WebClient _webClient;
+        private readonly GeckoWebBrowser _webBrowser;
+        private readonly Form _justForm;
+        private readonly Timer _loadingTimer;
+        private readonly WebClient _webClient;
         private bool _loading;
-        private bool _disposed;
 
         public TwitterDownloader()
         {
@@ -129,8 +128,7 @@ namespace TwitterPhotoDownloader
             this._loadingTimer.Start();
             await this.WaitForLoadingAsync();
 
-            if ( this._webBrowser.Document == null || this._webBrowser.Document.Body == null ||
-                 this._webBrowser.Window == null )
+            if ( this._webBrowser.Document?.Body == null || this._webBrowser.Window == null )
             {
                 return photosUrls;
             }
@@ -174,10 +172,7 @@ namespace TwitterPhotoDownloader
             foreach ( GeckoElement displayContentElement in displayContentElements )
             {
                 var el = displayContentElement as GeckoHtmlElement;
-                if ( el != null )
-                {
-                    el.Click();
-                }
+                el?.Click();
             }
 
             var elements =
@@ -231,11 +226,6 @@ namespace TwitterPhotoDownloader
             photosUrls.Clear();
         }
 
-        public async Task Exit()
-        {
-            Xpcom.Shutdown();
-        }
-
         #region Static methods
 
         public static string FixUserName( string url )
@@ -251,7 +241,7 @@ namespace TwitterPhotoDownloader
             {
                 using ( var client = new WebClient() )
                 {
-                    using ( var stream = client.OpenRead( "https://twitter.com/" ) )
+                    using ( client.OpenRead( "https://twitter.com/" ) )
                     {
                         return true;
                     }
@@ -260,52 +250,6 @@ namespace TwitterPhotoDownloader
             catch
             {
                 return false;
-            }
-        }
-
-        #endregion
-
-        #region Members
-
-        public void Dispose()
-        {
-            this.Dispose( true );
-            GC.SuppressFinalize( this );
-        }
-
-        private void Dispose( bool disposing )
-        {
-            if ( !this._disposed )
-            {
-                if ( disposing )
-                {
-                    if ( this._webBrowser != null )
-                    {
-                        this._webBrowser.Dispose();
-                    }
-                    if ( this._webClient != null )
-                    {
-                        this._webClient.Dispose();
-                    }
-                    if ( this._loadingTimer != null )
-                    {
-                        this._loadingTimer.Dispose();
-                    }
-                    if ( this._justForm != null )
-                    {
-                        this._justForm.Dispose();
-                    }
-                }
-
-                // Indicate that the instance has been disposed.
-                this._webBrowser = null;
-                this._webClient = null;
-                this._loadingTimer = null;
-                this.Progress = null;
-                this._justForm = null;
-                this._disposed = true;
-                this.ErrorsLinks.Clear();
-                this.ErrorsLinks = null;
             }
         }
 
