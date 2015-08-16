@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Gecko;
+using Gecko.Collections;
 using Timer = System.Windows.Forms.Timer;
 
 #endregion
@@ -97,8 +98,7 @@ namespace TwitterPhotoDownloader
         /// <param name="index"></param>
         private async Task DownloadFileAsync( string fileUrl, string savePath, int index )
         {
-            fileUrl = fileUrl.Substring( 0, fileUrl.Length - 6 );
-            string fileName = savePath + "\\" + index + Path.GetExtension( fileUrl );
+            string fileName = savePath + "\\" + index + Path.GetExtension( fileUrl.Substring( 0, fileUrl.Length - 6 ) );
             try
             {
                 Task task = TaskEx.Run( () => this._webClient.DownloadFileAsync( new Uri( fileUrl ), fileName ) );
@@ -162,36 +162,13 @@ namespace TwitterPhotoDownloader
             }
             while ( newHeight > oldHeight );
 
-            // get and click on display content button
-            var displayContentElements =
-                this._webBrowser.Document.Body.GetElementsByTagName( "button" )
-                    .Where(
-                        el =>
-                            el.GetAttribute( "class" ) != null &&
-                            el.GetAttribute( "class" ).Contains( "display-this-media" ) );
-            foreach ( GeckoElement displayContentElement in displayContentElements )
-            {
-                var el = displayContentElement as GeckoHtmlElement;
-                el?.Click();
-            }
-
-            var elements =
-                this._webBrowser.Document.Body.GetElementsByTagName( "img" )
-                    .Where(
-                        e =>
-                            e.GetAttribute( "class" ) == "TwitterPhoto-mediaSource" &&
-                            e.GetAttribute( "src" ).Contains( ":large" ) );
-            foreach ( GeckoElement element in elements )
-            {
-                try
-                {
-                    photosUrls.Add( element.GetAttribute( "src" ) );
-                }
-                catch
-                {
-                    continue;
-                }
-            }
+            var links =
+                this._webBrowser.Document.Body.GetElementsByTagName( "a" )
+                    .Where( el => el.GetAttribute( "class" ) != null
+                    && el.GetAttribute( "class" ).Contains( "media-thumbnail" )
+                    && el.GetAttribute( "class" ).Contains( "is-preview" )
+                    && el.GetAttribute( "data-resolved-url-large" ) != null ).ToList();
+            photosUrls.AddRange( links.Select( link => link.GetAttribute( "data-resolved-url-large" ) ) );
             return photosUrls;
         }
 
