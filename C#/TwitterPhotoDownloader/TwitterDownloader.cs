@@ -9,8 +9,10 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ExtensionMethods;
 using Gecko;
 using Gecko.Collections;
+using Gecko.DOM;
 using Timer = System.Windows.Forms.Timer;
 
 #endregion
@@ -72,6 +74,7 @@ namespace TwitterPhotoDownloader
             // иначе не работает скролл :(
             this._justForm = new Form();
             this._justForm.Controls.Add( this._webBrowser );
+            this._justForm.Show();
 
             #endregion
         }
@@ -98,7 +101,7 @@ namespace TwitterPhotoDownloader
         /// <param name="index"></param>
         private async Task DownloadFileAsync( string fileUrl, string savePath, int index )
         {
-            string fileName = savePath + "\\" + index + Path.GetExtension( fileUrl.Substring( 0, fileUrl.Length - 6 ) );
+            string fileName = savePath + "\\" + index + Path.GetExtension( fileUrl.Replace( ":large", "" ) );
             try
             {
                 Task task = TaskEx.Run( () => this._webClient.DownloadFileAsync( new Uri( fileUrl ), fileName ) );
@@ -162,13 +165,19 @@ namespace TwitterPhotoDownloader
             }
             while ( newHeight > oldHeight );
 
-            var links =
-                this._webBrowser.Document.Body.GetElementsByTagName( "a" )
-                    .Where( el => el.GetAttribute( "class" ) != null
-                    && el.GetAttribute( "class" ).Contains( "media-thumbnail" )
-                    && el.GetAttribute( "class" ).Contains( "is-preview" )
-                    && el.GetAttribute( "data-resolved-url-large" ) != null ).ToList();
-            photosUrls.AddRange( links.Select( link => link.GetAttribute( "data-resolved-url-large" ) ) );
+            this._webBrowser.Document.Body
+                .EvaluateXPath( "//div[@class=\"media-not-displayed\"]//button" )
+                .GetNodes()
+                .Select( el => el as GeckoButtonElement )
+                .ToList()
+                .ForEach( el => el.Click() );
+
+            IEnumerable<string> links = this._webBrowser.Document.Body
+                .GetElementsByTagName( "div" )
+                .Where( this.IsImageUrl )
+                .Select( link => link.GetAttribute( "data-image-url" ) + ":large" );
+            photosUrls.AddRange( links );
+
             return photosUrls;
         }
 
@@ -201,6 +210,12 @@ namespace TwitterPhotoDownloader
                 await TaskEx.Delay( 2500, cancellToken );
             }
             photosUrls.Clear();
+        }
+
+        private bool IsImageUrl( GeckoElement element )
+        {
+            string text = element.GetAttribute( "data-image-url" );
+            return !text.IsNullOrEmpty() && text.Contains( "twimg.com" );
         }
 
         #region Static methods
