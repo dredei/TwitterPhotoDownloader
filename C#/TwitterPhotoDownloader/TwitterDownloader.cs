@@ -13,6 +13,7 @@ using ExtensionMethods;
 using Gecko;
 using Gecko.Collections;
 using Gecko.DOM;
+using Newtonsoft.Json;
 using Timer = System.Windows.Forms.Timer;
 
 #endregion
@@ -74,7 +75,6 @@ namespace TwitterPhotoDownloader
             // иначе не работает скролл :(
             this._justForm = new Form();
             this._justForm.Controls.Add( this._webBrowser );
-            this._justForm.Show();
 
             #endregion
         }
@@ -125,7 +125,7 @@ namespace TwitterPhotoDownloader
         private async Task<List<string>> GetPhotosAsync( string username, CancellationToken cancellToken )
         {
             // loading media page
-            var photosUrls = new List<string>();
+            var urls = new List<string>();
             this._loading = true;
             this._webBrowser.Navigate( "https://twitter.com/" + username + "/media" );
             this._loadingTimer.Start();
@@ -133,7 +133,7 @@ namespace TwitterPhotoDownloader
 
             if ( this._webBrowser.Document?.Body == null || this._webBrowser.Window == null )
             {
-                return photosUrls;
+                return urls;
             }
             int oldHeight = 0;
             int newHeight = 0;
@@ -172,13 +172,26 @@ namespace TwitterPhotoDownloader
                 .ToList()
                 .ForEach( el => el.Click() );
 
+            // image links
             IEnumerable<string> links = this._webBrowser.Document.Body
                 .GetElementsByTagName( "div" )
                 .Where( this.IsImageUrl )
                 .Select( link => link.GetAttribute( "data-image-url" ) + ":large" );
-            photosUrls.AddRange( links );
+            urls.AddRange( links );
 
-            return photosUrls;
+            IEnumerable<string> videoUrls = this._webBrowser.Document.Body
+                .GetElementsByTagName( "iframe" )
+                .Select( el => el as GeckoIFrameElement ) // cast to GeckoIFrameElement
+                .Select( iframe => iframe.ContentDocument ) // cast to GeckoDocument
+                .Select( iframeElement => iframeElement.GetElementById( "playerContainer" ) ) // get player container
+                .Where( playerContainer => playerContainer != null )
+                .Select( playerContainer => playerContainer.GetAttribute( "data-config" ) ) // get JSON Config
+                .Where( dataConfigStr => !dataConfigStr.IsNullOrEmpty() ) // remove nulls
+                .Select( JsonConvert.DeserializeObject<TwitterPlayerDataConfig> ) // deserialize json
+                .Select( config => config.VideoUrl );
+            urls.AddRange( videoUrls );
+
+            return urls;
         }
 
         [STAThread]
@@ -269,5 +282,11 @@ namespace TwitterPhotoDownloader
                 }
             } );
         }
+    }
+
+    internal class TwitterPlayerDataConfig
+    {
+        [JsonProperty( "video_url" )]
+        public string VideoUrl { get; set; }
     }
 }
