@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -30,6 +31,14 @@ namespace TwitterPhotoDownloader
         public int Page { get; set; }
         public int Downloaded { get; set; }
         public ProgressType Type { get; set; }
+
+        public void Reset()
+        {
+            this.CurrentProgress = 0;
+            this.MaxProgress = 0;
+            this.Page = 0;
+            this.Downloaded = 0;
+        }
     }
 
     public enum ProgressType
@@ -89,7 +98,7 @@ namespace TwitterPhotoDownloader
         {
             while ( this._loading )
             {
-                await TaskEx.Delay( 500 );
+                await Task.Delay( 500 );
             }
         }
 
@@ -99,13 +108,13 @@ namespace TwitterPhotoDownloader
         /// <param name="fileUrl">URL to file</param>
         /// <param name="savePath">Where to save</param>
         /// <param name="index"></param>
-        private async Task DownloadFileAsync( string fileUrl, string savePath, int index )
+        private void DownloadFile( string fileUrl, string savePath, int index )
         {
-            string fileName = savePath + "\\" + index + Path.GetExtension( fileUrl.Replace( ":large", "" ) );
             try
             {
-                Task task = TaskEx.Run( () => this._webClient.DownloadFileAsync( new Uri( fileUrl ), fileName ) );
-                await task;
+                string fileName = savePath + "\\" + index + Path.GetExtension( fileUrl.Replace( ":large", "" ) );
+                var webClient = new WebClient();
+                webClient.DownloadFile( new Uri( fileUrl ), fileName );
             }
             catch
             {
@@ -188,7 +197,7 @@ namespace TwitterPhotoDownloader
                 .Select( playerContainer => playerContainer.GetAttribute( "data-config" ) ) // get JSON Config
                 .Where( dataConfigStr => !dataConfigStr.IsNullOrEmpty() ) // remove nulls
                 .Select( JsonConvert.DeserializeObject<TwitterPlayerDataConfig> ) // deserialize json
-                .Select( config => config.VideoUrl );
+                .Select( config => config.VideoUrl ); // select video urls
             urls.AddRange( videoUrls );
 
             return urls;
@@ -201,27 +210,27 @@ namespace TwitterPhotoDownloader
             {
                 savePath = savePath.Remove( savePath.Length - 1, 1 );
             }
-            this.Progress.Downloaded = 0;
-            this.Progress.CurrentProgress = 0;
-            this.Progress.MaxProgress = 0;
+            this.Progress.Reset();
             this.Progress.Type = ProgressType.GettingImages;
             List<string> photosUrls = await this.GetPhotosAsync( username, cancellToken );
+            this.Progress.Reset();
             this.Progress.MaxProgress = photosUrls.Count;
             this.Progress.Type = ProgressType.DownloadingImages;
             if ( !Directory.Exists( savePath ) )
             {
                 Directory.CreateDirectory( savePath );
             }
-            for ( int i = 0; i < photosUrls.Count; i++ )
-            {
-                if ( cancellToken.IsCancellationRequested )
-                {
-                    cancellToken.ThrowIfCancellationRequested();
-                }
-                await this.DownloadFileAsync( photosUrls[ i ], savePath, i + 1 );
-                this.Progress.CurrentProgress = i + 1;
-                await TaskEx.Delay( 2500, cancellToken );
-            }
+            await Task.Run(
+                () => Parallel.ForEach(
+                    photosUrls,
+                    new ParallelOptions { MaxDegreeOfParallelism = 4 },
+                    async ( url, state, index ) =>
+                    {
+                        this.DownloadFile( url, savePath, (int)index + 1 );
+                        this.Progress.CurrentProgress++;
+                        await Task.Delay( 2500, cancellToken );
+                    }
+                ), cancellToken );
             photosUrls.Clear();
         }
 
@@ -265,7 +274,7 @@ namespace TwitterPhotoDownloader
     {
         public static async Task ClearCache( this GeckoWebBrowser webBrowser )
         {
-            await TaskEx.Run( () =>
+            await Task.Run( () =>
             {
                 string profileDir = Xpcom.ProfileDirectory;
                 List<string> dirs = Directory.GetDirectories( profileDir ).ToList();
