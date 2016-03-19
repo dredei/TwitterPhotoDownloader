@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ExtensionMethods;
 using Gecko;
-using Gecko.Collections;
 using Gecko.DOM;
 using Newtonsoft.Json;
 using Timer = System.Windows.Forms.Timer;
@@ -58,7 +56,7 @@ namespace TwitterPhotoDownloader
         private readonly Form _justForm;
         private readonly Timer _loadingTimer;
         private readonly WebClient _webClient;
-        private bool _loading;
+        private volatile bool _loading;
 
         public TwitterDownloader()
         {
@@ -171,8 +169,7 @@ namespace TwitterPhotoDownloader
                 {
                     continue;
                 }
-            }
-            while ( newHeight > oldHeight );
+            } while ( newHeight > oldHeight );
 
             this._webBrowser.Document.Body
                 .EvaluateXPath( "//div[@class=\"media-not-displayed\"]//button" )
@@ -188,7 +185,7 @@ namespace TwitterPhotoDownloader
                 .Select( link => link.GetAttribute( "data-image-url" ) + ":large" );
             urls.AddRange( links );
 
-            IEnumerable<string> videoUrls = this._webBrowser.Document.Body
+            IEnumerable<string> videoUrls = Enumerable.Select( this._webBrowser.Document.Body
                 .GetElementsByTagName( "iframe" )
                 .Select( el => el as GeckoIFrameElement ) // cast to GeckoIFrameElement
                 .Select( iframe => iframe.ContentDocument ) // cast to GeckoDocument
@@ -196,8 +193,8 @@ namespace TwitterPhotoDownloader
                 .Where( playerContainer => playerContainer != null )
                 .Select( playerContainer => playerContainer.GetAttribute( "data-config" ) ) // get JSON Config
                 .Where( dataConfigStr => !dataConfigStr.IsNullOrEmpty() ) // remove nulls
-                .Select( JsonConvert.DeserializeObject<TwitterPlayerDataConfig> ) // deserialize json
-                .Select( config => config.VideoUrl ); // select video urls
+                .Select( JsonConvert.DeserializeObject<TwitterPlayerDataConfig> ), config => config.VideoUrl );
+            // select video urls
             urls.AddRange( videoUrls );
 
             return urls;
@@ -210,6 +207,7 @@ namespace TwitterPhotoDownloader
             {
                 savePath = savePath.Remove( savePath.Length - 1, 1 );
             }
+            this.ErrorsLinks.Clear();
             this.Progress.Reset();
             this.Progress.Type = ProgressType.GettingImages;
             List<string> photosUrls = await this.GetPhotosAsync( username, cancellToken );
@@ -223,14 +221,14 @@ namespace TwitterPhotoDownloader
             await Task.Run(
                 () => Parallel.ForEach(
                     photosUrls,
-                    new ParallelOptions { MaxDegreeOfParallelism = 4 },
+                    new ParallelOptions { MaxDegreeOfParallelism = 4, CancellationToken = cancellToken },
                     async ( url, state, index ) =>
                     {
                         this.DownloadFile( url, savePath, (int)index + 1 );
                         this.Progress.CurrentProgress++;
                         await Task.Delay( 2500, cancellToken );
                     }
-                ), cancellToken );
+                    ), cancellToken );
             photosUrls.Clear();
         }
 

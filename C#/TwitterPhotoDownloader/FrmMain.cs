@@ -1,6 +1,7 @@
 ﻿#region Using
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
@@ -21,22 +22,60 @@ namespace TwitterPhotoDownloader
         private string _language = "en-GB";
         private Thread _checkInternetThread;
         private readonly bool _possibleProgressInTaskBar;
-        private readonly Version _version = Version.Parse( "1.1.3" );
+        private readonly Version _version = Version.Parse( "1.1.4" );
         private CancellationTokenSource _cancellationTokenSource;
+        private bool _isAutoStart;
+        private bool _isSilent;
 
-        public FrmMain()
+        public FrmMain( string[] args )
         {
             this.LoadSettings();
             Thread.CurrentThread.CurrentUICulture = new CultureInfo( this._language );
             this.InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
-            if ( Environment.OSVersion.Version >= new Version( 6, 1 ) ) // if version current version >= win7
-            {
-                this._possibleProgressInTaskBar = true;
-            }
+            this._possibleProgressInTaskBar = Environment.OSVersion.Version >= new Version( 6, 1 );
+            // if version current version >= win7
             this.tbSavePath.Text = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ) +
                                    "\\TwitterPhotoDownloader";
             this._twitterDownloader = new TwitterDownloader();
+
+            Dictionary<string, string> paramsDict = this.ParseParameters( args );
+            this.SetFieldValuesByParams( paramsDict );
+        }
+
+        private Dictionary<string, string> ParseParameters( string[] parameters )
+        {
+            var paramsDict = new Dictionary<string, string>();
+            foreach ( string parameter in parameters )
+            {
+                string[] splitData = parameter.Split( '=' );
+                string key = splitData[ 0 ];
+                string value = splitData[ 1 ];
+                paramsDict.Remove( key );
+                paramsDict.Add( key, value );
+            }
+            return paramsDict;
+        }
+
+        private void SetFieldValuesByParams( Dictionary<string, string> paramsDict )
+        {
+            string value;
+            if ( paramsDict.TryGetValue( "username", out value ) )
+            {
+                this.tbUserName.Text = value;
+            }
+            if ( paramsDict.TryGetValue( "savePath", out value ) )
+            {
+                this.tbSavePath.Text = value;
+            }
+            if ( paramsDict.TryGetValue( "autostart", out value ) && bool.Parse( value ) )
+            {
+                this._isAutoStart = true;
+            }
+            if ( paramsDict.TryGetValue( "silent", out value ) && bool.Parse( value ) )
+            {
+                this._isSilent = true;
+            }
         }
 
         private void AutoPosLabels()
@@ -93,8 +132,13 @@ namespace TwitterPhotoDownloader
                     this._twitterDownloader.DownloadPhotosAsync( this.tbUserName.Text, this.tbSavePath.Text,
                         this._cancellationTokenSource.Token );
                 this.tmrProgress.Stop();
-                MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
-                if ( this._twitterDownloader.ErrorsLinks.Count > 0 )
+
+                if ( !this._isSilent )
+                {
+                    MessageBox.Show( strings.Done, strings.Information, MessageBoxButtons.OK, MessageBoxIcon.Information );
+                }
+
+                if ( this._twitterDownloader.ErrorsLinks.Count > 0 && !this._isSilent )
                 {
                     DialogResult dr = MessageBox.Show( strings.CopyToClipboard, strings.Error, MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question );
@@ -115,8 +159,12 @@ namespace TwitterPhotoDownloader
                 {
                     return;
                 }
-                MessageBox.Show( exception.Message, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
+                if ( !this._isSilent )
+                {
+                    MessageBox.Show( exception.Message, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
+                }
             }
+
             this.Invoke( new MethodInvoker( delegate
             {
                 this.tmrProgress.Stop();
@@ -130,6 +178,11 @@ namespace TwitterPhotoDownloader
                 }
             } ) );
             GC.Collect();
+
+            if ( this._isSilent )
+            {
+                Application.Exit();
+            }
         }
 
         private void DisEnControls()
@@ -188,7 +241,7 @@ namespace TwitterPhotoDownloader
             Process.Start( "http://www.softez.pp.ua/" );
         }
 
-        private async void FrmMain_FormClosing( object sender, FormClosingEventArgs e )
+        private void FrmMain_FormClosing( object sender, FormClosingEventArgs e )
         {
             this.SaveSettings();
             this._cancellationTokenSource?.Cancel();
@@ -238,12 +291,20 @@ namespace TwitterPhotoDownloader
         private void tmrCheckInternet_Tick( object sender, EventArgs e )
         {
             this.tmrCheckInternet.Stop();
-            this._checkInternetThread = new Thread( delegate()
+            this._checkInternetThread = new Thread( delegate ()
             {
                 if ( TwitterDownloader.CheckForInternetConnection() )
                 {
                     this.btnStart.Enabled = true;
                     this.tbUserName.Focus();
+                    new Thread( delegate ()
+                    {
+                        Thread.Sleep( 10000 );
+                        if ( this._isAutoStart )
+                        {
+                            this.btnStart.Invoke( new MethodInvoker( delegate { this.btnStart.PerformClick(); } ) );
+                        }
+                    } ).Start();
                 }
                 else
                 {
@@ -251,7 +312,8 @@ namespace TwitterPhotoDownloader
                     MessageBox.Show( strings.UnableAccess, strings.Error, MessageBoxButtons.OK, MessageBoxIcon.Error );
                     this.tmrCheckInternet.Start();
                 }
-            } ) { Priority = ThreadPriority.Lowest };
+            } )
+            { Priority = ThreadPriority.Lowest };
             this._checkInternetThread.Start();
         }
 

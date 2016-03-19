@@ -366,7 +366,7 @@
     <value>Русский</value>
   </data>
   <data name="языкToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 20</value>
+    <value>46, 20</value>
   </data>
   <data name="языкToolStripMenuItem.Text" xml:space="preserve">
     <value>Язык</value>
