@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "TwitterPhotoDownloader"
-#define MyAppVersion "1.1.2"
+#define MyAppVersion "1.1.3"
 #define MyAppPublisher "dredei, http://www.softez.pp.ua/"
 #define MyAppURL "http://www.softez.pp.ua/"
 #define MyAppExeName "TwitterPhotoDownloader.exe"
@@ -25,9 +25,9 @@ AllowNoIcons=yes
 LicenseFile=license.txt
 OutputDir=bin
 OutputBaseFilename=twitter_photo_downloader_setup
-Compression=lzma2/ultra64
+Compression=lzma/ultra64
 SolidCompression=yes
-InternalCompressLevel=ultra
+InternalCompressLevel=ultra64
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
